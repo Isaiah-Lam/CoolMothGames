@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#nav-bar {
+    padding: 15px;
+    background-color: purple;
+    color: white;
+    text-shadow: 2px 2px black;
+}
+
+.suggestion-btn {
+    text-decoration: none;
+    color: white;
+    background-color: black;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+    width: 140px;
+}
+
+.suggestion-btn:hover {
+    background-color: purple;
+}
+
+#suggestion-form {
+    display: none;
+    margin: 10px 0px;
+}
+
+.sg-input {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+
+.nav-list-item {
+    display: inline-block;
+    margin: 15px 15px 3px 0px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: transparent;
+    text-shadow: 2px 2px white;
+}
+
+.page-header {
+    width: fit-content;
+    margin: 50px auto 0px auto;
+}
+
+#song-table {
+    border: 2px solid black;
+    margin: 35px auto;
+    width: 80vw;
+    border-collapse: collapse;
+}
+
+#song-table th, #song-table td {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+#filters-div {
+    width: 80vw;
+    text-align: center;
+    margin: 20px auto 0 auto;
+}
+
+#suggestion-table {
+    border: 2px solid black;
+    margin: 35px auto;
+    width: 65vw;
+    border-collapse: collapse;
+}
+
+#suggestion-table th, #suggestion-table td {
+    border: 1px solid black;
+    padding: 5px;
+}
