@@ -1,0 +1,50 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+#mem-table {
+    margin: 0 auto;
+    border: 2px solid black;
+    border-spacing: 20px;
+    width: 860px;
+}
+
+.mem-cell {
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    box-shadow: 0.5px 0.5px black;
+    transition: 0.5s;
+}
+
+.mem-cell:hover {
+    box-shadow: 7.5px 7.5px black;
+}
+
+.mem-row, .mem-cell {
+    border: 1px solid black;
+}
+
+.facedown {
+    background-color: #526cb5;
+    background-position: -9999px -9999px;
+}
+
+.faceup {
+    background-position: center;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+#memory-form {
+    display: inline;
+}
+
+#memory-score {
+    border: none;
+}

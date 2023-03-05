@@ -1,12 +1,13 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
+from datetime import date
 import werkzeug.security
 
 
 app = Flask(__name__)
-connectionString = "postgresql://cmg_service:v2_3zhww_qhYRWUP4akHzCjzxNfcGuYZ@db.bit.io:5432/Isaiah-Lam/coolmothgames"
+connectionString = "postgresql://cmg_service:v2_3zhww_qhYRWUP4akHzCjzxNfcGuYZ@db.bit.io:5432/Isaiah-Lam/coolmothgames?sslmode=require"
 app.config['SQLALCHEMY_DATABASE_URI'] = (connectionString)
 database = SQLAlchemy(app, engine_options={"pool_recycle": 55})
 engine = create_engine(connectionString, echo=True)
@@ -65,7 +66,36 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/signup", methods=["GET"])
+def signupPage():
+    session["userid"] == None
+    session["username"] == None
+    return render_template("signup.html")
 
+
+@app.route('/login', methods=["GET"])
+def loginPage():
+    session["userid"] == None
+    session["username"] == None
+    return render_template("login.html")
+
+
+@app.route('/memory', methods=["GET"])
+def memory():
+    return render_template('memory.html')
+
+
+@app.route('/memory', methods=["POST"])
+def memoryScore():
+    if (session.get("userid") is None):
+        flash("You must be logged in to submit to the leaderboards")
+    else:
+        flash("Score submitted")
+        content = {"gameID":1, "userID":session.get("userid"), "date":date.today(), "score":request.form["score"]}
+        score = Leaderboards(**content)
+        database.session.add(score)
+        database.session.commit()
+    return redirect("/memory")
     
 
 

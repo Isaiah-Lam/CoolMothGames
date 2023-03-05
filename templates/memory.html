@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<head>
+    <link rel="stylesheet" href="static/styles/memory.css">
+</head>
+
+<div>
+
+    <h1>Memory Game</h1>
+    <button id="start-btn" onclick="startGame(this)">Start Game</button>
+    <form id="memory-form" action="/memory" method="post">
+        <input type="number" name="score" id="memory-score" readonly>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <h4>{{ messages[0] }}</h4>
+        {% endif %}
+    {% endwith %}
+    <div id="table-div">
+        <table id="mem-table">
+            {% for i in range (6) %}
+                <tr class="mem-row">
+                    {% for i in range (7) %}
+                        <td class="mem-cell"></td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+<script src="static/memory.js"></script>
+
+
+{% endblock %}
