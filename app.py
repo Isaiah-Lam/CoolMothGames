@@ -5,6 +5,16 @@ from sqlalchemy import create_engine, text
 from datetime import date
 import werkzeug.security
 
+# Examples on how to get and commit
+
+# content = {"name":request.form["name"], "email":request.form["email"]}
+# user = Users(**content)
+# database.session.add(user)
+# database.session.commit()
+
+# name = request.form["inputname"]
+# con.execute(text(f"insert into users (name) values({name})"), request.form)
+
 
 app = Flask(__name__)
 connectionString = "postgresql://cmg_service:v2_3zhww_qhYRWUP4akHzCjzxNfcGuYZ@db.bit.io:5432/Isaiah-Lam/coolmothgames?sslmode=require"
@@ -96,6 +106,12 @@ def memoryScore():
         database.session.add(score)
         database.session.commit()
     return redirect("/memory")
+
+
+@app.route('/rps')
+def rps():
+    return render_template("rps.html")
+
     
 
 

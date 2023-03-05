@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block body %}
+<head>
+    <link rel="stylesheet" href="static/styles/rps.css">
+</head>
+<body>
+    <div class="game-con">
+        <header>
+            <h1 class="header">Rock Paper Scissors</h1>
+            <div class="score-flex">
+                <h3>Player Score:<span id="p-score">0</span></h3>
+                <h3>Moth-man Score:<span id="c-score">0</span></h3>
+            </div>
+        </header>
+        <div class="wrapper">
+            <button class="emoji-big" id="rock">✊</button>
+            <button class="emoji-big" id="paper">✋</button>
+            <button class="emoji-big" id="scissors">✌️</button>
+        </div>
+
+        <div class="win-or-lose"></div>
+        
+        <div class="box-wrapper">
+            <div class="box-tool">
+                <p>Player</p>
+                <div class="box1"></div>
+            </div>
+
+                <div class="vs-box">
+                    <div class="vs">Vs</div>
+                </div>
+
+            <div class="box-tool">
+                <p>Moth-man</p>
+                <div class="box2"></div>
+            </div>
+        </div>
+    </header>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="static/rps.js"></script>
+</body>
+
+
+
+
+
+
+{% endblock %}

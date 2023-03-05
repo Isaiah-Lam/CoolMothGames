@@ -1,0 +1,117 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.game-con {
+    padding-top: 12px;
+    width: 50vw;
+    border: 50px solid seagreen;
+    box-shadow: 5px -3px 5px rgba(1, 1, 1, .2);
+    margin: 20 auto;
+    background-color: rgb(119, 211, 159);
+    
+}
+
+.header {
+    text-align: center;
+}
+
+.score-flex {
+    display: flex;
+    width: 45%;
+    margin: 2% 30% 0 27.5%;
+    justify-content: space-evenly;
+}
+
+span {
+    margin-left: 3px;
+}
+
+body {
+    font-family: "Open Sans";
+    background-image: url("/static/imgs/grass.jpg");
+    background-position: center;
+    background-size: cover;
+    color: white;
+}
+
+
+.emoji-big {
+    text-align: center;
+    font-size: 8rem;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: 100ms;
+}
+
+button:hover {
+    transform: scale(1.2);
+}
+
+.win-or-lose {
+    width: 140px;
+    height: 25px;
+    text-align: center;
+    font-weight: bolder;
+    color: black;
+    border: 2px solid white;
+    background-color: rgb(226, 208, 208);
+    border-radius: 10px;
+    margin: 15px auto;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.box-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.box-tool {
+    display: column;
+    text-align: center;
+}
+
+.box1 {
+    border: 3px solid white;
+    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+    font-size: 6rem;
+}
+
+.vs-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: whitesmoke;
+    margin: 70px 40px;
+}
+
+.vs {
+    color: black;
+    font-weight: bolder;
+    font-size: 2rem;
+    text-align: center;
+    width: 50px;
+    height: 50PX;
+    margin-top: 2px;
+}
+
+.box2 {
+    border: 3px solid white;
+    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+    font-size: 6rem;
+}
