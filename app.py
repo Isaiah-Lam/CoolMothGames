@@ -140,9 +140,20 @@ def memoryScore():
     return redirect("/memory")
 
 
-@app.route('/rps')
+@app.route('/rps', methods=["GET"])
 def rps():
-    return render_template("rps.html")
+    highScore = 0
+    if (session.get("userid") is None):
+        highScore = "Login to see highscore"
+    else:
+        highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
+        highScore = int(highScore.score)
+    return render_template("rps.html", highScore=highScore)
+
+@app.route('/rps', methods={"POST"})
+def rpsScore():
+    submitScore(2, request.form["score"])
+    return redirect("/rps")
 
 
 # function for submitting score to leaderboard
