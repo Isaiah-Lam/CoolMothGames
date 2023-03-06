@@ -4,6 +4,14 @@
     box-sizing: border-box;
 }
 
+.h-score {
+    margin-left: 1px;
+}
+
+.score {
+    margin-right: 1px;
+}
+
 .game-con {
     padding-top: 12px;
     width: 50vw;

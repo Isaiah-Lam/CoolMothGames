@@ -4,12 +4,17 @@
     <link rel="stylesheet" href="static/styles/rps.css">
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <h4>{{ messages[0] }}</h4>
+        {% endif %}
+    {% endwith %}
     <div class="game-con">
         <header>
             <h1 class="header">Rock Paper Scissors</h1>
             <div class="score-flex">
-                <h3>Player Score:<span id="p-score">0</span></h3>
-                <h3>Moth-man Score:<span id="c-score">0</span></h3>
+                <h3 class="score">Score:<span id="p-score">0</span></h3>
+                <h3 class="h-score">High-Score:<span>{{highScore}}</span></h3>
             </div>
         </header>
         <div class="wrapper">
@@ -36,7 +41,6 @@
             </div>
         </div>
     </header>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="static/rps.js"></script>
 </body>
 
