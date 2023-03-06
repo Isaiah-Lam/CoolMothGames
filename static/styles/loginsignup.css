@@ -1,0 +1,31 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+#account-container {
+    display: flex;
+    justify-content: center;
+    margin: 50px;
+}
+
+.account-div {
+    transition: width 1s;
+    overflow: hidden;
+    width: 33%;
+}
+
+/* #login-div {
+    width: 33%;
+    border: 1px solid black;
+}
+
+#signup-div {
+    width: 0;
+} */
+
+.account-input {
+    display: block;
+    margin: 2px;
+}

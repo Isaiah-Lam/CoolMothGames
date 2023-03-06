@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<head>
+    <link rel="stylesheet" href="static/styles/loginsignup.css">
+</head>
+<!-- <button onclick="change(this)">signup</button> -->
+<div id="account-container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <h4>{{ messages[0] }}</h4>
+        {% endif %}
+    {% endwith %}
+    <div id="login-div" class="account-div">
+        <h2>Login</h2>
+        <form id="login-form" class="account-form" action="/login" method="post">
+            <input type="text" name="username" id="log-user" class="account-input" placeholder="Username">
+            <input type="text" name="password" id="log-pass" class="account-input" placeholder="Password">
+            <input type="submit" class="account-input">
+        </form>
+    </div>
+    <div id="signup-div" class="account-div">
+        <h2>Create Account</h2>
+        <form id="signup-form" class="account-form" action="/signup" method="post">
+            <input type="text" name="email" id="sign-email" class="account-input" placeholder="Email">
+            <input type="text" name="username" id="sign-user" class="account-input" placeholder="Username">
+            <input type="text" name="password" id="sign-pass" class="account-input" placeholder="Password">
+            <input type="submit" class="account-input">
+        </form>
+    </div>
+</div>
+
+<script src="static/loginsignup.js"></script>
+
+{% endblock %}
