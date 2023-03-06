@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    
+    
+    <script src="tic-tac-toe.js"></script>
+    <link rel="stylesheet" href="static/styles/tic-tac-toe.css">
+    <title>TIC- TAC- TOES</title>
+</head>
+
+<body>
+    <header>
+        <h1 style="text-align: center;">Tic-Tac-Toe</h1>
+        <div id="score">
+            <div class="flex" id="player1Score">
+                <h3>Player-1 Score : </h3><span id="p1-score">0</span>
+
+            </div>
+            <div class="flex" id="player2Score">
+                <h3>Player-2 Score : </h3><span id="p2-score">0</span>
+            </div>
+            <div class="flex" id="tie">
+                <h3>Number of Stalemates: </h3><span id="ties">0</span>
+            </div>
+            <div class="flex" id="turn">
+                <span id="turn">Turn: Player - 1</span>
+            </div>
+        </div>
+
+    </header>
+    <div class="board">
+        <div class="row row-1">
+            <div class="box col-1" id="box-1"></div>
+            <div class="box col-2" id="box-2"></div>
+            <div class="box col-3" id="box-3"></div>
+        </div>
+        <div class="row row-2">
+            <div class="box col-1" id="box-4"></div>
+            <div class="box col-2" id="box-5"></div>
+            <div class="box col-3" id="box-6"></div>
+        </div>
+        <div class="row row-3">
+            <div class="box col-1" id="box-7"></div>
+            <div class="box col-2" id="box-8"></div>
+            <div class="box col-3" id="box-9"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+{% endblock %}

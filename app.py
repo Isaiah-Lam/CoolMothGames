@@ -156,6 +156,8 @@ def submitScore(gameID, score):
         database.session.add(score)
         database.session.commit()
 
+
+
     
 
 
