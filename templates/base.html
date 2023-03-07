@@ -13,6 +13,9 @@
 			<ul id="nav-list">
 				<li class="nav-list-item"><a class="nav-link" href="/">Home</a></li>
 				<li class="nav-list-item"><a class="nav-link" href="/games">Games</a></li>
+				{% if loggedIn %}
+					<li class="nav-list-item"><a class="nav-link" href="/account">My Account</a></li>
+				{% endif %}
 			</ul>
 		</div>
 	</header>

@@ -37,7 +37,7 @@ function startGame(btn) {
                             $(faceupMoths[0]).addClass("solved");
                             $(faceupMoths[1]).addClass("solved");
                             console.log($(".solved"));
-                            if ($(".solved").length == 2) {
+                            if ($(".solved").length == 4) {
                                 $("#memory-form").submit();
                             }
                         }, 2500);

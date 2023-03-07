@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<head>
+    <link rel="stylesheet" href="static/styles/connect4.css">
+</head>
+
+<h1>Connect4</h1>
+<button id="memory-btn" onclick="startGame(this)">Start Game</button>
+<div id="table-div">
+    <table id="connect-board">
+        {% for i in range (6) %}
+            <tr id="row{{i}}" class="connect-row">
+                {% for j in range (7) %}
+                    <td id="row{{i}}col{{j}}" class="connect-col col{{j}} available"></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+
+<script src="static/connect4.js"></script>
+
+{% endblock %}
