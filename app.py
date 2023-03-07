@@ -84,7 +84,7 @@ def index():
 @app.route('/account')
 def accountPage():
     if (session.get("userid") is None):
-        return render_template("loginsignup.html")
+        return render_template("loginsignup.html", loggedIn=False)
     else:
         user = Users.query.filter_by(userID=session.get("userid"))
         return render_template("account.html", loggedIn=(session.get("userid") is not None))
@@ -140,7 +140,7 @@ def memoryScore():
     return redirect("/memory")
 
 
-@app.route('/rps')
+@app.route('/rps', methods=["GET"])
 def rps():
     return render_template("rps.html", loggedIn=(session.get("userid") is not None))
 
@@ -148,6 +148,18 @@ def rps():
 @app.route('/connect4', methods=["GET"])
 def connect4():
     return render_template("connect4.html", loggedIn=(session.get("userid") is not None))
+    highScore = 0
+    if (session.get("userid") is None):
+        highScore = "Login to see highscore"
+    else:
+        highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
+        highScore = int(highScore.score)
+    return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
+
+@app.route('/rps', methods={"POST"})
+def rpsScore():
+    submitScore(2, request.form["score"])
+    return redirect("/rps")
 
 
 # function for submitting score to leaderboard

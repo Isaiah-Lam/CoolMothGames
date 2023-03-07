@@ -69,6 +69,23 @@ function clear() {
     $(".box2").empty()
 }
 
+function finalScore() {
+    if (compScore > 0 && playerScore == 0) {
+        compScore = 0;
+    }
+    if (compScore > 0 && playerScore >= 1) {
+        form = document.createElement("form");
+        $(document.body).append(form);
+        $(form).attr("action", "/rps");
+        $(form).attr("method", "POST");
+        input = document.createElement("input");
+        $(input).attr("name", "score");
+        $(input).val(playerScore);
+        $(form).append(input);
+        $(form).submit();
+    }
+}
+
 $(".emoji-big").click(function(){
     clear()
      $(this).addClass("playerChoice");
@@ -87,4 +104,5 @@ $(".emoji-big").click(function(){
      console.log(`Player move is ${playerMove}`)
      compChoice();
      checkWinner();
+     finalScore();
 })
