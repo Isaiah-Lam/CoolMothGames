@@ -86,8 +86,8 @@ def accountPage():
     if (session.get("userid") is None):
         return render_template("loginsignup.html")
     else:
-        user = Users.query.filter_by(userID=session.get("userid"))
-        return render_template("account.html")
+        user = Users.query.filter_by(userID=session.get("userid")).first()
+        return render_template("account.html", userInfo = user)
     
 
 @app.route('/signup', methods=["POST"])
@@ -122,11 +122,30 @@ def logout():
     session["userid"] = None
     session["username"] = None
     return redirect('/account')
+
+@app.route('/account', methods=["GET"])
+def account():
+    return render_template('account.html')
     
 
 @app.route('/games')
 def gamesPage():
     return render_template("games.html")
+
+@app.route('/tictactoe', methods=["GET"])
+def tictactoe():
+    user = Users.query.filter_by(userID=session.get("userid")).first()
+
+    # working to add each user's highscore to the page when it loads
+
+    # highscore = con.execute(text(f'select MAX("score") from leaderboards where "userID" = user.userID'))\
+
+    return render_template('tic-tac-toe.html', userInfo = user)
+
+
+@app.route('/tictactoe', methods=["POST"])
+def tictactoePost():
+    return render_template('tic-tac-toe.html')
 
 
 @app.route('/memory', methods=["GET"])

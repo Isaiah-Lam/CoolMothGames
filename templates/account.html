@@ -1,1 +1,24 @@
-put account info here
+{% extends 'base.html' %}
+{% block body %}
+<div>
+    <div>
+        <h1>Account ID</h1>
+        {{userInfo.userID}}
+    </div>
+    <div>
+        <h1>username</h1>
+        {{userInfo.username}}
+    </div>
+    <div>
+        <h1>Email</h1>
+        {{userInfo.email}}
+    </div>
+
+</div>
+
+
+
+
+
+
+{% endblock %}
