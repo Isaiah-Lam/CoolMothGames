@@ -14,19 +14,24 @@
 <div id="leaderboard-div">
     {%for game in games%}
     <div class="leaderboard" id="{{game.gameID}}">
-        <h3 class="game-title">{{game.title}}</h3>
+        
             <table class="leaderboard-table">
+                <tr>
+                    <th></th>
+                    <th><h3 class="game-title">{{game.title}}</h3></th>
+
+                </tr>
                 <tr class="table-row">
-                    <th>User</th>
-                    <th>Score</th>
-                    <th>Date</th>
+                    <th class="rows">User</th>
+                    <th class="rows">Score</th>
+                    <th class="rows">Date</th>
                 </tr>
                 {%for row in leaderboards%}
                     {%if game.gameID == row.gameID %}
                         <tr class="table-row">
-                            <td>{{row.username}}</td>
-                            <td>{{row.score}}</td>
-                            <td>{{row.date}}</td>
+                            <td class="rows">{{row.username}}</td>
+                            <td class="rows">{{row.score}}</td>
+                            <td class="rows">{{row.date}}</td>
                         </tr>
                     {% endif %}
                 {%endfor%}
