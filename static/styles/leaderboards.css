@@ -1,0 +1,24 @@
+.leaderboard-table{
+    border: 1px solid;
+    margin: 0 auto;
+}
+
+.table-row {
+    border: 1px solid;
+    margin-left: 5px;
+}
+
+.leaderboard {
+    margin: 5px auto;
+}
+
+.game_select {
+    margin: 5px auto;
+    text-align: center;
+}
+
+.game-title {
+    margin: 5px auto;
+    text-align: center;
+}
+
