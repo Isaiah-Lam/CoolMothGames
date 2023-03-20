@@ -150,10 +150,22 @@ def rps():
         highScore = int(highScore.score)
     return render_template("rps.html", highScore=highScore)
 
-@app.route('/rps', methods={"POST"})
+@app.route('/rps', methods=["POST"])
 def rpsScore():
     submitScore(2, request.form["score"])
     return redirect("/rps")
+
+@app.route("/leaderboards", methods=["GET"])
+def leaderboards():
+    games = Games.query.order_by(Games.title).all()
+    # leaderboards = Leaderboards.query.order_by(Leaderboards.score).join(Users, Leaderboards.userID==Users.userID).all()
+    try:
+        leaderboards = con.execute(text(f'SELECT "boardID", "gameID", users."userID", "date", "score", "username" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
+        return render_template("leaderboards.html", games=games, leaderboards=leaderboards)
+    except:
+        con.rollback()
+        return redirect("/leaderboards")
+    
 
 
 # function for submitting score to leaderboard
