@@ -78,16 +78,17 @@ Session(app)
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("index.html", loggedIn=(session.get("userid") is not None))
 
 
 @app.route('/account')
 def accountPage():
     if (session.get("userid") is None):
-        return render_template("loginsignup.html")
+        return render_template("loginsignup.html", loggedIn=False)
     else:
-        user = Users.query.filter_by(userID=session.get("userid")).first()
-        return render_template("account.html", userInfo = user)
+        user = Users.query.filter_by(userID=session.get("userid"))
+        return render_template("account.html", loggedIn=(session.get("userid") is not None))
+
     
 
 @app.route('/signup', methods=["POST"])
@@ -130,7 +131,7 @@ def account():
 
 @app.route('/games')
 def gamesPage():
-    return render_template("games.html")
+    return render_template("games.html", loggedIn=(session.get("userid") is not None))
 
 @app.route('/tictactoe', methods=["GET"])
 def tictactoe():
@@ -150,7 +151,7 @@ def tictactoePost():
 
 @app.route('/memory', methods=["GET"])
 def memory():
-    return render_template('memory.html')
+    return render_template('memory.html', loggedIn=(session.get("userid") is not None))
 
 
 @app.route('/memory', methods=["POST"])
@@ -159,9 +160,38 @@ def memoryScore():
     return redirect("/memory")
 
 
-@app.route('/rps')
+@app.route('/rps', methods=["GET"])
 def rps():
-    return render_template("rps.html")
+    return render_template("rps.html", loggedIn=(session.get("userid") is not None))
+
+
+@app.route('/connect4', methods=["GET"])
+def connect4():
+    return render_template("connect4.html", loggedIn=(session.get("userid") is not None))
+    highScore = 0
+    if (session.get("userid") is None):
+        highScore = "Login to see highscore"
+    else:
+        highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
+        highScore = int(highScore.score)
+    return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
+
+@app.route('/rps', methods=["POST"])
+def rpsScore():
+    submitScore(2, request.form["score"])
+    return redirect("/rps")
+
+@app.route("/leaderboards", methods=["GET"])
+def leaderboards():
+    games = Games.query.order_by(Games.title).all()
+    # leaderboards = Leaderboards.query.order_by(Leaderboards.score).join(Users, Leaderboards.userID==Users.userID).all()
+    try:
+        leaderboards = con.execute(text(f'SELECT "boardID", "gameID", users."userID", "date", "score", "username" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
+        return render_template("leaderboards.html", games=games, leaderboards=leaderboards)
+    except:
+        con.rollback()
+        return redirect("/leaderboards")
+    
 
 
 # function for submitting score to leaderboard

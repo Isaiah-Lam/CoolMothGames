@@ -1,6 +1,7 @@
 <html>
 
 	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="static/styles/style.css">
 <!--        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -13,6 +14,9 @@
 			<ul id="nav-list">
 				<li class="nav-list-item"><a class="nav-link" href="/">Home</a></li>
 				<li class="nav-list-item"><a class="nav-link" href="/games">Games</a></li>
+				{% if loggedIn %}
+					<li class="nav-list-item"><a class="nav-link" href="/account">My Account</a></li>
+				{% endif %}
 			</ul>
 		</div>
 	</header>
@@ -20,7 +24,7 @@
 	{% block body %}
 	{% endblock %}
 
-	
+
 	<script src="static/script.js"></script>
 
 </html>
