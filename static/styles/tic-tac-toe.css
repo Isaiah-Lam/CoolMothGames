@@ -47,3 +47,7 @@
     margin: 0 auto;
     width: 75%;
 }
+
+.X, .O{
+    font-size:  10vw;
+}
