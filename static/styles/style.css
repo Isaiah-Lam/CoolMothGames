@@ -9,6 +9,8 @@
     background-color: seagreen;
     color: white;
     text-shadow: 2px 2px black;
+    font-size: large;
+    font-weight: 600;
 }
 
 .nav-list-item {

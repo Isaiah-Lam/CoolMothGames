@@ -8,9 +8,16 @@
 <div>
 
     <h1>Memory Game</h1>
-    <button id="start-btn" onclick="startGame(this)">Start Game</button>
+    <select name="difficulty" id="game-difficulty" onchange="changeDifficulty(this.value)">
+        <option value="" selected disabled>Select a difficulty:</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+    </select>
+    <button id="start-btn" onclick="startGame(this)" disabled>Start Game</button>
     <form id="memory-form" action="/memory" method="post">
         <input type="number" name="score" id="memory-score" readonly>
+        <input type="text" name="difficulty" id="difficulty" value="" style="display: none;">
     </form>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -19,13 +26,13 @@
     {% endwith %}
     <div id="table-div">
         <table id="mem-table">
-            {% for i in range (6) %}
+            <!-- {% for i in range (6) %}
                 <tr class="mem-row">
                     {% for i in range (7) %}
                         <td class="mem-cell"></td>
                     {% endfor %}
                 </tr>
-            {% endfor %}
+            {% endfor %} -->
         </table>
     </div>
 

@@ -1,0 +1,51 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#board-div {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+#board {
+    border: 3px solid black;
+    border-collapse: separate;
+    background-color: gray;
+    visibility: hidden;
+    /* border-spacing: 4px; */
+}
+
+.board-cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: darkgray;
+    text-align: center;
+    box-shadow: 1px 1px black;
+}
+
+.board-cell:hover {
+    background-color: lightgray;
+}
+/* 
+.board-cell:focus {
+    visibility: hidden;
+} */
+
+/* .mine {
+    background-color: red;
+} */
+
+.hidden {
+    visibility: hidden;
+}
+
+.flagged {
+    background-color: darkorange;
+}
+
+.flagged:hover {
+    background-color: orange;
+}

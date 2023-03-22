@@ -62,6 +62,7 @@ class Leaderboards(database.Model) :
     userID = database.Column(database.Integer, database.ForeignKey("users.userID"))
     date = database.Column(database.Date)
     score = database.Column(database.Float)
+    difficulty = database.Column(database.String(25))
 
 # these lines add the models defined above to the database as tables
 
@@ -156,7 +157,7 @@ def memory():
 
 @app.route('/memory', methods=["POST"])
 def memoryScore():
-    submitScore(1, request.form["score"])
+    submitScore(1, request.form["score"], request.form["difficulty"])
     return redirect("/memory")
 
 
@@ -167,7 +168,6 @@ def rps():
 
 @app.route('/connect4', methods=["GET"])
 def connect4():
-    return render_template("connect4.html", loggedIn=(session.get("userid") is not None))
     highScore = 0
     if (session.get("userid") is None):
         highScore = "Login to see highscore"
@@ -175,6 +175,7 @@ def connect4():
         highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
         highScore = int(highScore.score)
     return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
+
 
 @app.route('/rps', methods=["POST"])
 def rpsScore():
@@ -194,13 +195,24 @@ def leaderboards():
     
 
 
+@app.route('/minesweeper')
+def minsweeper():
+    return render_template("minesweeper.html", loggedIn=(session.get("userid") is not None))
+
+
+@app.route("/minesweeper", methods=["POST"])
+def minesweeperScore() :
+    submitScore(4, request.form["score"], request.form["difficulty"])
+    return redirect("/minesweeper")
+
+
 # function for submitting score to leaderboard
-def submitScore(gameID, score):
+def submitScore(gameID, score, difficulty=None):
     if (session.get("userid") is None):
         flash("You must be logged in to submit to the leaderboards")
     else:
         flash("Score submitted")
-        content = {"gameID":gameID, "userID":session.get("userid"), "date":date.today(), "score":score}
+        content = {"gameID":gameID, "userID":session.get("userid"), "date":date.today(), "score":score, "difficulty":difficulty}
         score = Leaderboards(**content)
         database.session.add(score)
         database.session.commit()
