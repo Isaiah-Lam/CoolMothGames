@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<head>
+    <link rel="stylesheet" href="static/styles/leaderboards.css">
+</head>
+
+<div class="game_select">
+    <button onclick="switchBoard(this)">Reset Filter</button>
+    {%for games in games%}
+        <button onclick="switchBoard(this)">{{games.title}}</button>
+    {%endfor%}
+</div>
+<div id="leaderboard-div">
+    {%for game in games%}
+    <div class="leaderboard" id="{{game.gameID}}">
+        
+            <table class="leaderboard-table">
+                <tr>
+                    <th></th>
+                    <th><h3 class="game-title">{{game.title}}</h3></th>
+
+                </tr>
+                <tr class="table-row">
+                    <th class="rows">User</th>
+                    <th class="rows">Score</th>
+                    <th class="rows">Date</th>
+                </tr>
+                {%for row in leaderboards%}
+                    {%if game.gameID == row.gameID %}
+                        <tr class="table-row">
+                            <td class="rows">{{row.username}}</td>
+                            <td class="rows">{{row.score}}</td>
+                            <td class="rows">{{row.date}}</td>
+                        </tr>
+                    {% endif %}
+                {%endfor%}
+            </table>
+      
+    </div>
+    {%endfor%}
+</div>
+
+<script src="static/leaderboards.js"></script>
+
+
+{% endblock %}

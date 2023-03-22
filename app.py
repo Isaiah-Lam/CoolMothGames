@@ -89,6 +89,7 @@ def accountPage():
     else:
         user = Users.query.filter_by(userID=session.get("userid"))
         return render_template("account.html", loggedIn=(session.get("userid") is not None))
+
     
 
 @app.route('/signup', methods=["POST"])
@@ -123,11 +124,30 @@ def logout():
     session["userid"] = None
     session["username"] = None
     return redirect('/account')
+
+@app.route('/account', methods=["GET"])
+def account():
+    return render_template('account.html')
     
 
 @app.route('/games')
 def gamesPage():
     return render_template("games.html", loggedIn=(session.get("userid") is not None))
+
+@app.route('/tictactoe', methods=["GET"])
+def tictactoe():
+    user = Users.query.filter_by(userID=session.get("userid")).first()
+
+    # working to add each user's highscore to the page when it loads
+
+    # highscore = con.execute(text(f'select MAX("score") from leaderboards where "userID" = user.userID'))\
+
+    return render_template('tic-tac-toe.html', userInfo = user)
+
+
+@app.route('/tictactoe', methods=["POST"])
+def tictactoePost():
+    return render_template('tic-tac-toe.html')
 
 
 @app.route('/memory', methods=["GET"])
@@ -157,10 +177,22 @@ def connect4():
     return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
 
 
-@app.route('/rps', methods={"POST"})
+@app.route('/rps', methods=["POST"])
 def rpsScore():
     submitScore(2, request.form["score"])
     return redirect("/rps")
+
+@app.route("/leaderboards", methods=["GET"])
+def leaderboards():
+    games = Games.query.order_by(Games.title).all()
+    # leaderboards = Leaderboards.query.order_by(Leaderboards.score).join(Users, Leaderboards.userID==Users.userID).all()
+    try:
+        leaderboards = con.execute(text(f'SELECT "boardID", "gameID", users."userID", "date", "score", "username" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
+        return render_template("leaderboards.html", games=games, leaderboards=leaderboards)
+    except:
+        con.rollback()
+        return redirect("/leaderboards")
+    
 
 
 @app.route('/minesweeper')
