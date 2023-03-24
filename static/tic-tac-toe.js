@@ -84,11 +84,11 @@ $(".box").click(function(){
     $(this).removeClass("empty")
     $(this).css("pointer-events", "none");
     if(checkWin("X")){
-        winStreak++;
-        p1Score++;
-        $("#p1-score").text(p1Score);
-        clearBoard();
-       
+        let form = document.createElement("form")
+        $(form).attr("action", "/tictactoe")
+        $(form).attr("method", "POST")
+        document.getElementById("body").appendChild(form)
+        $(form).submit()
 
     }
     else if(checkTie()){
