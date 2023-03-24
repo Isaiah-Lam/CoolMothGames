@@ -7,30 +7,39 @@
 
 <div class="game_select">
     <button onclick="switchBoard(this)">Reset Filter</button>
-    {%for games in games%}
-        <button onclick="switchBoard(this)">{{games.title}}</button>
+    {%for game in games%}
+        {% if game.gameID != 5 %}
+            <button onclick="switchBoard(this)">{{game.title}}</button>
+        {% endif %}
     {%endfor%}
 </div>
 <div id="leaderboard-div">
     {%for game in games%}
+    {% if game.gameID != 5 %}
     <div class="leaderboard" id="{{game.gameID}}">
         
             <table class="leaderboard-table">
                 <tr>
-                    <th></th>
-                    <th><h3 class="game-title">{{game.title}}</h3></th>
-
+                    <th colspan="4"><h3 class="game-title">{{game.title}}</h3></th>
                 </tr>
                 <tr class="table-row">
                     <th class="rows">User</th>
-                    <th class="rows">Score</th>
-                    <th class="rows">Date</th>
+                    {% if game.gameID == 4 %}
+                        <th class="rows">Time</th>
+                        <th class="rows">Difficulty</th>
+                    {% else %}
+                        <th class="rows">Score</th>
+                    {% endif %}
+                        <th class="rows">Date</th>
                 </tr>
                 {%for row in leaderboards%}
                     {%if game.gameID == row.gameID %}
                         <tr class="table-row">
                             <td class="rows">{{row.username}}</td>
                             <td class="rows">{{row.score}}</td>
+                            {% if game.gameID == 4 %}
+                                <td class="rows">{{row.difficulty}}</td>
+                            {% endif %}
                             <td class="rows">{{row.date}}</td>
                         </tr>
                     {% endif %}
@@ -38,6 +47,7 @@
             </table>
       
     </div>
+    {% endif %}
     {%endfor%}
 </div>
 

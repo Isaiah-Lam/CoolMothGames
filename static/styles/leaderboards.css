@@ -1,8 +1,9 @@
 .leaderboard-table {
     border: 1px solid;
-    margin: 0 auto;
+    margin: 10px auto;
     background-color: seagreen;
     width: 50%;
+    border-collapse : collapse;
 }
 
 .rows{

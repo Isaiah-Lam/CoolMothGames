@@ -178,11 +178,6 @@ def memoryScore():
 
 @app.route('/rps', methods=["GET"])
 def rps():
-    return render_template("rps.html", loggedIn=(session.get("userid") is not None))
-
-
-@app.route('/connect4', methods=["GET"])
-def connect4():
     highScore = 0
     if (session.get("userid") is None):
         highScore = "Login to see highscore"
@@ -190,6 +185,12 @@ def connect4():
         highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
         highScore = int(highScore.score)
     return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
+
+
+
+@app.route('/connect4', methods=["GET"])
+def connect4():
+    return render_template("connect4.html", loggedIn=(session.get("userid") is not None))
 
 
 @app.route('/rps', methods=["POST"])
@@ -202,8 +203,8 @@ def leaderboards():
     games = Games.query.order_by(Games.title).all()
     # leaderboards = Leaderboards.query.order_by(Leaderboards.score).join(Users, Leaderboards.userID==Users.userID).all()
     try:
-        leaderboards = con.execute(text(f'SELECT "boardID", "gameID", users."userID", "date", "score", "username" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
-        return render_template("leaderboards.html", games=games, leaderboards=leaderboards)
+        leaderboards = con.execute(text(f'SELECT "boardID", "gameID", users."userID", "date", "score", "username", "difficulty" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
+        return render_template("leaderboards.html", games=games, leaderboards=leaderboards, loggedIn=(session.get("userid") is not None))
     except:
         con.rollback()
         return redirect("/leaderboards")
