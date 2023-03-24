@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<head>
+    <link rel="stylesheet" href="static/styles/chess.css">
+</head>
+<button onclick="flipBoard()">flip</button>
+<div id="board-div">
+    {% set c = namespace(color='light') %}
+    {% for i in range(8) %}
+        {% for j in range(8) %}
+            <div id="col{{columns[j]}}row{{i+1}}" class="square {{c.color}}">
+                {% if i == 0 or i == 1 %}
+                    <div class="piece black {{rows[i][j][1:]}}">
+                        {{rows[i][j]}}
+                    </div>
+                {% elif i == 6 or i == 7 %}
+                    <div class="piece white {{rows[i-4][j][1:]}}">
+                        {{rows[i-4][j]}}
+                    </div>
+                {% endif %}
+            </div>
+            {% if c.color == 'dark' %}
+                {% set c.color = 'light' %}
+            {% else %}
+                {% set c.color = 'dark' %}
+            {% endif %}
+        {% endfor %}
+        {% if c.color == 'dark' %}
+            {% set c.color = 'light' %}
+        {% else %}
+            {% set c.color = 'dark' %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+<script src="static/chess.js"></script>
+
+
+{% endblock %}
