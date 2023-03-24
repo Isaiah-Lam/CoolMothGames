@@ -18,7 +18,7 @@ import werkzeug.security
 
 
 # here's a really good overview of the SQLAlchemy query builder
-# https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries/
+# https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/config/
 
 
 app = Flask(__name__)
@@ -138,18 +138,33 @@ def gamesPage():
 @app.route('/tictactoe', methods=["GET"])
 def tictactoe():
     user = Users.query.filter_by(userID=session.get("userid")).first()
+    wins = Leaderboards.query.filter_by(userID=session.get("userid"), gameID=3).first()
+  
 
     # working to add each user's highscore to the page when it loads
 
     # highscore = con.execute(text(f'select MAX("score") from leaderboards where "userID" = user.userID'))\
 
-    return render_template('tic-tac-toe.html', userInfo = user)
+    return render_template('tic-tac-toe.html', userInfo = user, wins=wins, loggedIn=(session.get("userid") is not None))
 
 
 @app.route('/tictactoe', methods=["POST"])
 def tictactoePost():
-    return render_template('tic-tac-toe.html')
-
+    if(session.get("userid") is not None):
+        wins = Leaderboards.query.filter_by(userID=session.get("userid"), gameID=3).first()
+        
+        if(wins is None):
+            content = {"gameID":3, "userID":session.get("userid"), "date":date.today(), "score":1, "difficulty":None}
+            score = Leaderboards(**content)
+            database.session.add(score)
+            database.session.commit()
+        else:
+            wins.score = wins.score + 1
+            database.session.commit()
+            
+    else:  
+        flash("not logged in")
+    return redirect('/tictactoe')
 
 @app.route('/memory', methods=["GET"])
 def memory():
@@ -164,19 +179,13 @@ def memoryScore():
 
 @app.route('/rps', methods=["GET"])
 def rps():
-    return render_template("rps.html", loggedIn=(session.get("userid") is not None))
-
-
-@app.route('/connect4', methods=["GET"])
-def connect4():
-    return render_template("connect4.html", loggedIn=(session.get("userid") is not None))
-    # highScore = 0
-    # if (session.get("userid") is None):
-    #     highScore = "Login to see highscore"
-    # else:
-    #     highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
-    #     highScore = int(highScore.score)
-    # return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
+    highScore = 0
+    if (session.get("userid") is None):
+          highScore = "Login to see highscore"
+    else:
+        highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
+        highScore = int(highScore.score)
+    return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
 
 
 @app.route('/rps', methods=["POST"])
@@ -184,13 +193,20 @@ def rpsScore():
     submitScore(2, request.form["score"])
     return redirect("/rps")
 
+
+@app.route('/connect4', methods=["GET"])
+def connect4():
+    return render_template("connect4.html", loggedIn=(session.get("userid") is not None))
+
+
+
 @app.route("/leaderboards", methods=["GET"])
 def leaderboards():
     games = Games.query.order_by(Games.title).all()
     # leaderboards = Leaderboards.query.order_by(Leaderboards.score).join(Users, Leaderboards.userID==Users.userID).all()
     try:
-        leaderboards = con.execute(text(f'SELECT "boardID", "gameID", users."userID", "date", "score", "username" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
-        return render_template("leaderboards.html", games=games, leaderboards=leaderboards)
+        leaderboards = con.execute(text(f'SELECT "boardID", "gameID", users."userID", "date", "score", "username", "difficulty" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
+        return render_template("leaderboards.html", games=games, leaderboards=leaderboards, loggedIn=(session.get("userid") is not None))
     except:
         con.rollback()
         return redirect("/leaderboards")
