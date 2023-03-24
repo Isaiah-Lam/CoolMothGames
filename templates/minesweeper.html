@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<head>
+    <link rel="stylesheet" href="static/styles/minesweeper.css">
+</head>
+
+<div id="game-stuff">
+    <!-- <button onclick="openOptions()"><h2>Game Options</h2></button> -->
+    <div id="game-options">
+        <select name="difficulty" id="game-difficulty" onchange="changeDifficulty(this.value)">
+            <option value="" selected disabled>Select a difficulty:</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+    </div>
+    <div id="stopwatch-div">
+        <span id="seconds">0</span>
+        <span id="centiseconds">00</span>
+    </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <h4>{{ messages[0] }}</h4>
+        {% endif %}
+    {% endwith %}
+</div>
+
+<div id="board-div">
+    <table id="board">
+        
+    </table>
+</div>
+
+<script src="static/minesweeper.js"></script>
+
+{% endblock %}

@@ -48,3 +48,7 @@
 #memory-score {
     border: none;
 }
+
+#table-div {
+    visibility: hidden;
+}

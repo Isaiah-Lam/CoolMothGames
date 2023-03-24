@@ -15,17 +15,18 @@
         <h1 style="text-align: center;">Tic-Tac-Toe</h1>
         <div id="score">
             <div class="flex" id="highScore">
-                <h3>{{userInfo.username}}'s Highest Score : </h3><span id="playerHigh"></span>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <h4>{{ messages[0] }}</h4>
+                    {%else%}
+                        {%if loggedIn %}
+                            <h3>{{userInfo.username}}'s Total Wins: </h3><span id="playerWins">{{wins.score}}</span>
+                        {%endif%}
+                    {% endif %}
+                {% endwith %}
+                
             </div>
-            <div class="flex" id="player1Score">
-                <h3>{{userInfo.username}}'s Score : </h3><span id="p1-score">0</span>
-            </div>
-            <div class="flex" id="player2Score">
-                <h3>Computer Score : </h3><span id="p2-score">0</span>
-            </div>
-            <div class="flex" id="tie">
-                <h3>Number of Stalemates: </h3><span id="ties">0</span>
-            </div>
+            
         </div>
 
     </header>

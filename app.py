@@ -18,7 +18,7 @@ import werkzeug.security
 
 
 # here's a really good overview of the SQLAlchemy query builder
-# https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries/
+# https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/config/
 
 
 app = Flask(__name__)
@@ -62,6 +62,7 @@ class Leaderboards(database.Model) :
     userID = database.Column(database.Integer, database.ForeignKey("users.userID"))
     date = database.Column(database.Date)
     score = database.Column(database.Float)
+    difficulty = database.Column(database.String(25))
 
 # these lines add the models defined above to the database as tables
 
@@ -136,18 +137,33 @@ def gamesPage():
 @app.route('/tictactoe', methods=["GET"])
 def tictactoe():
     user = Users.query.filter_by(userID=session.get("userid")).first()
+    wins = Leaderboards.query.filter_by(userID=session.get("userid"), gameID=3).first()
+  
 
     # working to add each user's highscore to the page when it loads
 
     # highscore = con.execute(text(f'select MAX("score") from leaderboards where "userID" = user.userID'))\
 
-    return render_template('tic-tac-toe.html', userInfo = user)
+    return render_template('tic-tac-toe.html', userInfo = user, wins=wins, loggedIn=(session.get("userid") is not None))
 
 
 @app.route('/tictactoe', methods=["POST"])
 def tictactoePost():
-    return render_template('tic-tac-toe.html')
-
+    if(session.get("userid") is not None):
+        wins = Leaderboards.query.filter_by(userID=session.get("userid"), gameID=3).first()
+        
+        if(wins is None):
+            content = {"gameID":3, "userID":session.get("userid"), "date":date.today(), "score":1, "difficulty":None}
+            score = Leaderboards(**content)
+            database.session.add(score)
+            database.session.commit()
+        else:
+            wins.score = wins.score + 1
+            database.session.commit()
+            
+    else:  
+        flash("not logged in")
+    return redirect('/tictactoe')
 
 @app.route('/memory', methods=["GET"])
 def memory():
@@ -156,7 +172,7 @@ def memory():
 
 @app.route('/memory', methods=["POST"])
 def memoryScore():
-    submitScore(1, request.form["score"])
+    submitScore(1, request.form["score"], request.form["difficulty"])
     return redirect("/memory")
 
 
@@ -176,6 +192,7 @@ def rps():
 def connect4():
     return render_template("connect4.html", loggedIn=(session.get("userid") is not None))
 
+
 @app.route('/rps', methods=["POST"])
 def rpsScore():
     submitScore(2, request.form["score"])
@@ -194,13 +211,24 @@ def leaderboards():
     
 
 
+@app.route('/minesweeper')
+def minsweeper():
+    return render_template("minesweeper.html", loggedIn=(session.get("userid") is not None))
+
+
+@app.route("/minesweeper", methods=["POST"])
+def minesweeperScore() :
+    submitScore(4, request.form["score"], request.form["difficulty"])
+    return redirect("/minesweeper")
+
+
 # function for submitting score to leaderboard
-def submitScore(gameID, score):
+def submitScore(gameID, score, difficulty=None):
     if (session.get("userid") is None):
         flash("You must be logged in to submit to the leaderboards")
     else:
         flash("Score submitted")
-        content = {"gameID":gameID, "userID":session.get("userid"), "date":date.today(), "score":score}
+        content = {"gameID":gameID, "userID":session.get("userid"), "date":date.today(), "score":score, "difficulty":difficulty}
         score = Leaderboards(**content)
         database.session.add(score)
         database.session.commit()
