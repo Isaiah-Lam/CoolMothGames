@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
-from datetime import date
+from datetime import date, timedelta
 import werkzeug.security
 
 # Examples on how to get and commit
@@ -73,6 +73,7 @@ class Leaderboards(database.Model) :
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
 Session(app)
 
 
@@ -87,7 +88,7 @@ def accountPage():
     if (session.get("userid") is None):
         return render_template("loginsignup.html", loggedIn=False)
     else:
-        user = Users.query.filter_by(userID=session.get("userid"))
+        # user = Users.query.filter_by(userID=session.get("userid"))
         return render_template("account.html", loggedIn=(session.get("userid") is not None))
 
     
@@ -180,12 +181,17 @@ def memoryScore():
 def rps():
     highScore = 0
     if (session.get("userid") is None):
-        highScore = "Login to see highscore"
+          highScore = "Login to see highscore"
     else:
         highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
         highScore = int(highScore.score)
     return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
 
+
+@app.route('/rps', methods=["POST"])
+def rpsScore():
+    submitScore(2, request.form["score"])
+    return redirect("/rps")
 
 
 @app.route('/connect4', methods=["GET"])
@@ -193,10 +199,6 @@ def connect4():
     return render_template("connect4.html", loggedIn=(session.get("userid") is not None))
 
 
-@app.route('/rps', methods=["POST"])
-def rpsScore():
-    submitScore(2, request.form["score"])
-    return redirect("/rps")
 
 @app.route("/leaderboards", methods=["GET"])
 def leaderboards():
@@ -210,7 +212,6 @@ def leaderboards():
         return redirect("/leaderboards")
     
 
-
 @app.route('/minesweeper')
 def minsweeper():
     return render_template("minesweeper.html", loggedIn=(session.get("userid") is not None))
@@ -220,6 +221,13 @@ def minsweeper():
 def minesweeperScore() :
     submitScore(4, request.form["score"], request.form["difficulty"])
     return redirect("/minesweeper")
+
+
+@app.route('/chess')
+def chess():
+    cols = ['H','G','F','E','D','C','B','A']
+    rows = [["bRook", "bKnight", "bBishop", "bQueen", "bKing", "bBishop", "bKnight", "bRook"], ["bPawn", "bPawn", "bPawn", "bPawn","bPawn", "bPawn","bPawn", "bPawn"], ["wPawn", "wPawn", "wPawn", "wPawn","wPawn", "wPawn","wPawn", "wPawn"], ["wRook", "wKnight", "wBishop", "wQueen", "wKing", "wBishop", "wKnight", "wRook"]]
+    return render_template("chess.html", columns=cols, rows=rows, loggedIn=(session.get("userid") is not None))
 
 
 # function for submitting score to leaderboard
