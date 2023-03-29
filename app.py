@@ -225,9 +225,10 @@ def minesweeperScore() :
 
 @app.route('/chess')
 def chess():
-    cols = ['H','G','F','E','D','C','B','A']
-    rows = [["bRook", "bKnight", "bBishop", "bQueen", "bKing", "bBishop", "bKnight", "bRook"], ["bPawn", "bPawn", "bPawn", "bPawn","bPawn", "bPawn","bPawn", "bPawn"], ["wPawn", "wPawn", "wPawn", "wPawn","wPawn", "wPawn","wPawn", "wPawn"], ["wRook", "wKnight", "wBishop", "wQueen", "wKing", "wBishop", "wKnight", "wRook"]]
+    cols = ['A','B','C','D','E','F','G','H']
+    rows = [["wRook", "wKnight", "wBishop", "wQueen", "wKing", "wBishop", "wKnight", "wRook"], ["wPawn", "wPawn", "wPawn", "wPawn","wPawn", "wPawn","wPawn", "wPawn"], ["bPawn", "bPawn", "bPawn", "bPawn","bPawn", "bPawn","bPawn", "bPawn"], ["bRook", "bKnight", "bBishop", "bQueen", "bKing", "bBishop", "bKnight", "bRook"]]
     return render_template("chess.html", columns=cols, rows=rows, loggedIn=(session.get("userid") is not None))
+
 
 
 @app.route('/memory-forums', methods=["GET"])
@@ -297,6 +298,18 @@ def forumsSubmit():
         routes = {"1":"/memory-forums", "2":"/rps-forums", "3":"/tictactoe-forums", "4":"/minesweeper-forums","5":"/connect4-forums"}
         route = request.form["gameid"]
     return redirect(routes[route])
+
+
+@app.route('/blackjack', methods=["GET"])
+def blackjack():
+    return render_template("blackjack.html", loggedIn=(session.get("userid") is not None))
+
+
+
+@app.route('/spacewar', methods=["GET"])
+def spacewar():
+    return render_template("spacewar.html", loggedIn=(session.get("userid") is not None))
+
 
 
 # function for submitting score to leaderboard

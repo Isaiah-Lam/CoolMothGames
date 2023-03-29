@@ -1,0 +1,30 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#deck {
+    width: 125px;
+    height: 175px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* #top-card {
+    width: 125px;
+    height: 175px;
+    border-radius: 10px;
+    background-color: #526cb5;
+} */
+
+.card {
+    width: 125px;
+    height: 175px;
+    border-radius: 10px;
+    border: 2px solid black;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("/static/imgs/cardback.png");
+}
