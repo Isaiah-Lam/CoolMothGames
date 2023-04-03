@@ -9,14 +9,10 @@
     height: 175px;
     border-radius: 10px;
     overflow: hidden;
+    box-shadow: 3px 3px black;
 }
 
-/* #top-card {
-    width: 125px;
-    height: 175px;
-    border-radius: 10px;
-    background-color: #526cb5;
-} */
+
 
 .card {
     width: 125px;
@@ -26,5 +22,46 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url("/static/imgs/cardback.png");
+}
+
+.heart {
+    background-image: url("/static/imgs/cardsuits/hearts.jpg");
+}
+
+.club {
+    background-image: url("/static/imgs/cardsuits/clubs.jpg");
+}
+
+.diamond {
+    background-image: url("/static/imgs/cardsuits/diamonds.jpg");
+}
+
+.spade {
+    background-image: url("/static/imgs/cardsuits/spades.jpg");
+}
+
+#top-right {
+    display: block;
+    padding: 7% 0% 0% 80%;
+}
+
+#bottom-left {
+    display: block;
+    margin: 98% 0 0 10% ;
+}
+
+.facedown {
+    background-image: url("/static/imgs/cardsuits/cardback.png");
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hand {
+    display: flex;
+    flex-direction: row;
+}
+
+#hit-btn {
+    display: none;
 }
