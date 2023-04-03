@@ -49,7 +49,7 @@ function startGame(btn) {
 
         $(".mem-cell").each(function () {
             let picNum = Math.floor(Math.random() * moths.length);
-            $(this).css("background-image", "url(static/imgs/"+moths[picNum]+".jpg)");
+            $(this).css("background-image", "url(static/imgs/moths/"+moths[picNum]+".jpg)");
             this.classList.add(moths[picNum]);
             this.classList.add("facedown");
             // $(this).css("background", "linear-gradient(rgba(29, 44, 181, 1), rgba(29, 44, 181, 1)), url(static/imgs/"+moths[picNum]+")");
