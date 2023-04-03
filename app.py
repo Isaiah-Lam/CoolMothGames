@@ -83,15 +83,21 @@ def index():
     return render_template("index.html", loggedIn=(session.get("userid") is not None))
 
 
-@app.route('/account')
+@app.route('/account', methods=["GET"])
 def accountPage():
     if (session.get("userid") is None):
         return render_template("loginsignup.html", loggedIn=False)
     else:
-        # user = Users.query.filter_by(userID=session.get("userid"))
-        return render_template("account.html", loggedIn=(session.get("userid") is not None))
+        user = Users.query.filter_by(userID=session.get("userid"))
+        print(user)
+        return render_template("account.html", userInfo=user, loggedIn=(session.get("userid") is not None))
 
-    
+
+@app.route('/login', methods=["GET"])
+def loadlogin():
+    return render_template("loginsignup.html")
+
+
 
 @app.route('/signup', methods=["POST"])
 def signup():
@@ -126,9 +132,9 @@ def logout():
     session["username"] = None
     return redirect('/account')
 
-@app.route('/account', methods=["GET"])
-def account():
-    return render_template('account.html')
+# @app.route('/account', methods=["GET"])
+# def account():
+#     return render_template('account.html')
     
 
 @app.route('/games')
@@ -139,12 +145,6 @@ def gamesPage():
 def tictactoe():
     user = Users.query.filter_by(userID=session.get("userid")).first()
     wins = Leaderboards.query.filter_by(userID=session.get("userid"), gameID=3).first()
-  
-
-    # working to add each user's highscore to the page when it loads
-
-    # highscore = con.execute(text(f'select MAX("score") from leaderboards where "userID" = user.userID'))\
-
     return render_template('tic-tac-toe.html', userInfo = user, wins=wins, loggedIn=(session.get("userid") is not None))
 
 
@@ -163,7 +163,7 @@ def tictactoePost():
             database.session.commit()
             
     else:  
-        flash("not logged in")
+        flash("Please Login to track wins.")
     return redirect('/tictactoe')
 
 @app.route('/memory', methods=["GET"])
