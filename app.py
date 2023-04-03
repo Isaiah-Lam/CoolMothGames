@@ -55,6 +55,7 @@ class Messages(database.Model) :
     userID = database.Column(database.Integer, database.ForeignKey("users.userID"))
     date = database.Column(database.Date)
     message = database.Column(database.String(255))
+    replyTo = database.Column(database.Integer)
 
 class Leaderboards(database.Model) :
     boardID = database.Column(database.Integer, primary_key = True)
@@ -72,7 +73,6 @@ class Leaderboards(database.Model) :
 
 
 app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
 Session(app)
 
@@ -225,9 +225,91 @@ def minesweeperScore() :
 
 @app.route('/chess')
 def chess():
-    cols = ['H','G','F','E','D','C','B','A']
-    rows = [["bRook", "bKnight", "bBishop", "bQueen", "bKing", "bBishop", "bKnight", "bRook"], ["bPawn", "bPawn", "bPawn", "bPawn","bPawn", "bPawn","bPawn", "bPawn"], ["wPawn", "wPawn", "wPawn", "wPawn","wPawn", "wPawn","wPawn", "wPawn"], ["wRook", "wKnight", "wBishop", "wQueen", "wKing", "wBishop", "wKnight", "wRook"]]
+    cols = ['A','B','C','D','E','F','G','H']
+    rows = [["wRook", "wKnight", "wBishop", "wQueen", "wKing", "wBishop", "wKnight", "wRook"], ["wPawn", "wPawn", "wPawn", "wPawn","wPawn", "wPawn","wPawn", "wPawn"], ["bPawn", "bPawn", "bPawn", "bPawn","bPawn", "bPawn","bPawn", "bPawn"], ["bRook", "bKnight", "bBishop", "bQueen", "bKing", "bBishop", "bKnight", "bRook"]]
     return render_template("chess.html", columns=cols, rows=rows, loggedIn=(session.get("userid") is not None))
+
+
+
+@app.route('/memory-forums', methods=["GET"])
+def memForums():
+    try:
+        game = Games.query.filter_by(gameID='1').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 1;'))
+    except:
+        con.rollback()
+        return redirect("/memory-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/rps-forums', methods=["GET"])
+def rpsForums():
+    try:
+        game = Games.query.filter_by(gameID='2').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 2;'))
+    except:
+        con.rollback()
+        return redirect("/rps-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/tictactoe-forums', methods=["GET"])
+def tttForums():
+    try:
+        game = Games.query.filter_by(gameID='3').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 3;'))
+    except:
+        con.rollback()
+        return redirect("/tictactoe-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/minesweeper-forums', methods=["GET"])
+def mineForums():
+    try: 
+        game = Games.query.filter_by(gameID='4').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 4;'))
+    except:
+        con.rollback()
+        return redirect("/minesweeper-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/connect4-forums', methods=["GET"])
+def connect4Forums():
+    try:
+        game = Games.query.filter_by(gameID='5').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 5;'))
+    except:
+        con.rollback()
+        return redirect("connect4-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/forums', methods=['POST'])
+def forumsSubmit():
+    if (session.get("userid") is None):
+        flash("You must be logged in to submit to the forums")
+    else:
+        flash("Comment Submitted")
+        try:
+            reply = request.form["replyTo"]
+        except:
+            reply = None
+        content = {"gameID":request.form["gameid"], "userID":session.get("userid"), "date":date.today(), "message":request.form["message"], "replyTo":reply}
+        message = Messages(**content)
+        database.session.add(message)
+        database.session.commit()
+        routes = {"1":"/memory-forums", "2":"/rps-forums", "3":"/tictactoe-forums", "4":"/minesweeper-forums","5":"/connect4-forums"}
+        route = request.form["gameid"]
+    return redirect(routes[route])
+
+
+@app.route('/blackjack', methods=["GET"])
+def blackjack():
+    return render_template("blackjack.html", loggedIn=(session.get("userid") is not None))
+
+
+
+@app.route('/spacewar', methods=["GET"])
+def spacewar():
+    return render_template("spacewar.html", loggedIn=(session.get("userid") is not None))
+
 
 
 # function for submitting score to leaderboard
