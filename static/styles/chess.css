@@ -34,6 +34,13 @@
     background-size: contain;
 }
 
+
+.valid {
+    background-color: rgba(0,0,0,.1);
+    padding: 4.2%;
+
+}
+
 .valid.light {
     background-color: rgba(210, 180, 140, 0.5);
 }
@@ -41,3 +48,4 @@
 .valid.dark {
     background-color: rgba(165, 42, 42, 0.5);
 }
+
