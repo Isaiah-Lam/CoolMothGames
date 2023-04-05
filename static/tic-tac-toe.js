@@ -1,6 +1,3 @@
-var p1Score = 0;
-var p2Score = 0;
-var tie = 0;
 var count = 0;
 var turn = 1;
 var winStreak = 0; 
@@ -29,7 +26,6 @@ function computerTurn(){
     $(spot).css("pointer-events", "none");
     turn = 1;
     if(checkWin("O")){
-        p2Score++;
         winStreak = 0;
         $("#p2-score").text(p2Score);
         clearBoard();
@@ -103,60 +99,3 @@ $(".box").click(function(){
     
 })
 
-// $(".box").click(function(){
-   
-//     pop.play();
-
-    //     while(turn === 1 && count < 9){
-    //         $(this).text("X")
-    //         $(this).addClass("X")
-    //         $(this).removeClass("empty")
-    //         $(this).css("pointer-events" ,"none")
-    //         count++
-    //         turn = 2;
-    
-    //         $("#turn").text("Turn: Computer")
-    //         if(checkWinX()){
-    //             p1Score++
-    //             count = 0
-    //             $("#p1-score").text(p1Score)
-    //             clearBoard();
-    //             $(".box").removeClass("X O")
-    //         }
-    //         else if(count === 9){
-    //             tie++; 
-    //             $("#ties").text(tie)
-    //             clearBoard();
-    //             count = 0;
-    //             $(".box").removeClass("X O")
-    //         }
-    // }
-    // computerTurn()
-    // {
-        
-    //     $(this).text("O")
-    //     $(this).addClass("O")
-    //     $(this).css("pointer-events" ,"none")
-    //     count++
-    //     turn = 1;
-    //     console.log(count)
-    //     $("#turn").text("Turn: Player-1")
-    //     if(checkWinO()){
-    //         p2Score++;
-    //         count = 0;
-    //         $("#p2-score").text(p2Score)
-    //         $(".box").removeClass("X O")
-    //         clearBoard();
-    //     }
-    //     else if(count === 9){
-    //         tie++; 
-    //         $("#ties").text(tie)
-    //         clearBoard();
-    //         count = 0;
-    //         console.log(tie)
-    //         console.log(count)
-    //         $(".box").removeClass("X O")
-    //     }
-    // }
-    
-// })

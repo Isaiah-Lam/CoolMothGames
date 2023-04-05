@@ -55,6 +55,7 @@ class Messages(database.Model) :
     userID = database.Column(database.Integer, database.ForeignKey("users.userID"))
     date = database.Column(database.Date)
     message = database.Column(database.String(255))
+    replyTo = database.Column(database.Integer)
 
 class Leaderboards(database.Model) :
     boardID = database.Column(database.Integer, primary_key = True)
@@ -84,15 +85,21 @@ def index():
     return render_template("index.html", loggedIn=(session.get("userid") is not None))
 
 
-@app.route('/account')
+@app.route('/account', methods=["GET"])
 def accountPage():
     if (session.get("userid") is None):
         return render_template("loginsignup.html", loggedIn=False)
     else:
-        # user = Users.query.filter_by(userID=session.get("userid"))
-        return render_template("account.html", loggedIn=(session.get("userid") is not None))
+        user = Users.query.filter_by(userID=session.get("userid"))
+        print(user)
+        return render_template("account.html", userInfo=user, loggedIn=(session.get("userid") is not None))
 
-    
+
+@app.route('/login', methods=["GET"])
+def loadlogin():
+    return render_template("loginsignup.html")
+
+
 
 @app.route('/signup', methods=["POST"])
 def signup():
@@ -127,9 +134,9 @@ def logout():
     session["username"] = None
     return redirect('/account')
 
-@app.route('/account', methods=["GET"])
-def account():
-    return render_template('account.html')
+# @app.route('/account', methods=["GET"])
+# def account():
+#     return render_template('account.html')
     
 
 @app.route('/games')
@@ -140,12 +147,6 @@ def gamesPage():
 def tictactoe():
     user = Users.query.filter_by(userID=session.get("userid")).first()
     wins = Leaderboards.query.filter_by(userID=session.get("userid"), gameID=3).first()
-  
-
-    # working to add each user's highscore to the page when it loads
-
-    # highscore = con.execute(text(f'select MAX("score") from leaderboards where "userID" = user.userID'))\
-
     return render_template('tic-tac-toe.html', userInfo = user, wins=wins, loggedIn=(session.get("userid") is not None))
 
 
@@ -164,7 +165,7 @@ def tictactoePost():
             database.session.commit()
             
     else:  
-        flash("not logged in")
+        flash("Please Login to track wins.")
     return redirect('/tictactoe')
 
 @app.route('/memory', methods=["GET"])
@@ -231,6 +232,76 @@ def chess():
     return render_template("chess.html", columns=cols, rows=rows, loggedIn=(session.get("userid") is not None))
 
 
+
+
+@app.route('/memory-forums', methods=["GET"])
+def memForums():
+    try:
+        game = Games.query.filter_by(gameID='1').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 1;'))
+    except:
+        con.rollback()
+        return redirect("/memory-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/rps-forums', methods=["GET"])
+def rpsForums():
+    try:
+        game = Games.query.filter_by(gameID='2').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 2;'))
+    except:
+        con.rollback()
+        return redirect("/rps-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/tictactoe-forums', methods=["GET"])
+def tttForums():
+    try:
+        game = Games.query.filter_by(gameID='3').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 3;'))
+    except:
+        con.rollback()
+        return redirect("/tictactoe-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/minesweeper-forums', methods=["GET"])
+def mineForums():
+    try: 
+        game = Games.query.filter_by(gameID='4').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 4;'))
+    except:
+        con.rollback()
+        return redirect("/minesweeper-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/connect4-forums', methods=["GET"])
+def connect4Forums():
+    try:
+        game = Games.query.filter_by(gameID='5').first()
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 5;'))
+    except:
+        con.rollback()
+        return redirect("connect4-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+
+@app.route('/forums', methods=['POST'])
+def forumsSubmit():
+    if (session.get("userid") is None):
+        flash("You must be logged in to submit to the forums")
+    else:
+        flash("Comment Submitted")
+        try:
+            reply = request.form["replyTo"]
+        except:
+            reply = None
+        content = {"gameID":request.form["gameid"], "userID":session.get("userid"), "date":date.today(), "message":request.form["message"], "replyTo":reply}
+        message = Messages(**content)
+        database.session.add(message)
+        database.session.commit()
+        routes = {"1":"/memory-forums", "2":"/rps-forums", "3":"/tictactoe-forums", "4":"/minesweeper-forums","5":"/connect4-forums"}
+        route = request.form["gameid"]
+    return redirect(routes[route])
+
 @app.route('/blackjack', methods=["GET"])
 def blackjack():
     return render_template("blackjack.html", loggedIn=(session.get("userid") is not None))
@@ -249,6 +320,7 @@ def spacewarScore():
 @app.route('/drawpad')
 def drawpad():
     return render_template("drawpad.html", loggedIn=(session.get("userid") is not None))
+
 
 
 # function for submitting score to leaderboard
