@@ -17,6 +17,9 @@
 				<li class="nav-list-item"><a class="nav-link" href="/leaderboards">Leaderboards</a></li>
 				{% if loggedIn %}
 					<li class="nav-list-item"><a class="nav-link" href="/account">My Account</a></li>
+					<li class="nav-list-item"><a class="nav-link" href="/logout">Log out</a></li>
+				{%else%}
+				<li class="nav-list-item"><a class="nav-link" href="/login">login</a></li>
 				{% endif %}
 			</ul>
 		</div>
