@@ -239,12 +239,12 @@ def blackjack():
 
 @app.route('/starwar', methods=["GET"])
 def spacewar():
-    return render_template("spacewar.html", loggedIn=(session.get("userid") is not None))
+    return render_template("starwar.html", loggedIn=(session.get("userid") is not None))
 
 @app.route('/starwar', methods=["POST"])
 def spacewarScore():
     submitScore(6, request.form["score"])
-    return render_template("spacewar.html", loggedIn=(session.get("userid") is not None))
+    return render_template("starwar.html", loggedIn=(session.get("userid") is not None))
 
 @app.route('/drawpad')
 def drawpad():
