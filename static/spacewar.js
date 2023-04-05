@@ -1,6 +1,12 @@
 window.addEventListener('load', function() {
     $("#dialog").dialog({autoOpen: false});
 
+    $("#start-btn").click(function () {
+        $(this).hide();
+        $("#canvas").css("visibility", "visible");
+        animate();
+    })
+
     const canvas = this.document.getElementById("canvas");
     const ctx = canvas.getContext('2d');
 
@@ -413,7 +419,8 @@ window.addEventListener('load', function() {
         }
         requestAnimationFrame(animate);
     }
-    animate();
+    // animate();
+
     // game.stopwatch();
 
     function startUpgrade(shotSpeed, range, size) {

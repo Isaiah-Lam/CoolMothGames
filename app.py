@@ -246,6 +246,10 @@ def spacewarScore():
     submitScore(6, request.form["score"])
     return render_template("spacewar.html", loggedIn=(session.get("userid") is not None))
 
+@app.route('/drawpad')
+def drawpad():
+    return render_template("drawpad.html", loggedIn=(session.get("userid") is not None))
+
 
 # function for submitting score to leaderboard
 def submitScore(gameID, score, difficulty=None):
@@ -260,7 +264,7 @@ def submitScore(gameID, score, difficulty=None):
 
 
 
-    
+
 
 
 

@@ -4,16 +4,23 @@
     box-sizing: border-box;
 }
 
+body {
+    overflow: hidden;
+}
+
 #canvas {
     background: url('/static/imgs/spacebackground.jpg');
     border: 1px solid black;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    position: absolute;
-    top: 55%;
-    left: 50%;
+    /* position: absolute; */
+    /* top: 55%;
+    left: 50%; */
+    margin-top: 20%;
+    margin-left: 50%;
     transform: translate(-50%, -50%);
+    visibility: hidden;
 }
 
 #upgrade-div {
