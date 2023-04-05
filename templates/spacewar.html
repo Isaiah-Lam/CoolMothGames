@@ -5,11 +5,30 @@
         <!-- <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
         <link rel="stylesheet" href="static/styles/spacewar.css">
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>
 
 
     <body>
-        
+        <!-- <div id="stopwatch-div">
+            <span id="seconds">0</span>
+            <span id="centiseconds">00</span>
+        </div> -->
+        <div id="score-div">
+            <span>Score:</span>
+            <span id="score">0</span>
+            <span>Level:</span>
+            <span id="level">0</span>
+            <span>Health:</span>
+            <span id="health">500</span>
+            <button id="start-btn">Start Game</button>
+        </div>
+        <!-- <div id="upgrade-div">
+            <p>Choose an Upgrade:</p>
+            <button onclick="upgrade('ammo')">Max Ammo</button>
+            <button onclick="upgrade('shotspeed')">Shot Speed</button>
+        </div> -->
+        <div id="dialog" title="Upgrade">Choose an upgrade:</div>
         <canvas id="canvas"></canvas>
 
         <script src="static/spacewar.js"></script>

@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    height: fit-content;
+}
+
+#canvas {
+    background-color: white;
+    border: 1px solid black;
+    width: 70vw;
+    height: 75vh;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#draw-tools {
+    border: 1px solid blue;
+    width: 200px;
+    height: 720px; 
+    float: left; 
+    margin: 2.5%;
+}
