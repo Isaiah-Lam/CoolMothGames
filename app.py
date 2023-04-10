@@ -317,10 +317,30 @@ def spacewarScore():
     submitScore(6, request.form["score"])
     return render_template("spacewar.html", loggedIn=(session.get("userid") is not None))
 
+
 @app.route('/drawpad')
 def drawpad():
     return render_template("drawpad.html", loggedIn=(session.get("userid") is not None))
 
+
+@app.route('/flappymoth', methods=["GET"])
+def flappymoth():
+    return render_template("flappymoth.html", loggedIn=(session.get("userid") is not None))
+
+@app.route("/flappymoth", methods=["POST"])
+def flappyMothScore():
+    submitScore(7, request.form["score"])
+    return render_template("flappymoth.html", loggedIn=(session.get("userid") is not None))
+
+
+@app.route("/doodlemoth", methods=["GET"])
+def doodlemoth():
+    return render_template("doodlemoth.html")
+
+@app.route("/doodlemoth", methods=["POST"])
+def doodleMothScore():
+    submitScore(8, request.form["score"])
+    return render_template("doodlemoth.html", loggedIn=(session.get("userid") is not None))
 
 
 # function for submitting score to leaderboard
