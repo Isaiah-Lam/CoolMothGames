@@ -6,11 +6,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
         <link rel="stylesheet" href="static/styles/drawpad.css">
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script type="module">
+            import Canvas2Image from '/static/canvas2image.js';
+            $("#save-btn").click(function () {
+                Canvas2Image.saveAsPNG(canvas, canvas.width, canvas.height)
+            })
+        </script>
     </head>
 
 
     <body>
         <div id="draw-tools">
+            <button id="save-btn">Save Drawing</button>
             <button onclick="clearPad()">Clear Pad</button>
             <p>Presets:</p>
             <select id="draw-presets" onchange="changePenPreset(this.value)">
@@ -60,7 +67,6 @@
             </select>
         </div>
         <canvas id="canvas"></canvas>
-        
         
 
         <script src="static/drawpad.js"></script>

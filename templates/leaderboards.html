@@ -6,10 +6,10 @@
 </head>
 
 <div class="game_select">
-    <button onclick="switchBoard(this)">Reset Filter</button>
+    <button onclick='switchBoard("0")'>Reset Filter</button>
     {%for game in games%}
         {% if game.gameID != 5 and game.gameID != 3 %}
-            <button onclick="switchBoard(this)">{{game.title}}</button>
+            <button onclick='switchBoard("{{game.gameID}}")'>{{game.title}}</button>
         {% endif %}
     {%endfor%}
 </div>

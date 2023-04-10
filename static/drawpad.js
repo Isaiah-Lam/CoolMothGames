@@ -1,8 +1,11 @@
+// import Canvas2Image from "./canvas2image";
+// import { saveAsPNG } from './canvas2image';
+
 const canvas = this.document.getElementById("canvas");
 const ctx = canvas.getContext('2d');
 
-canvas.width = 1280;
-canvas.height = 720;
+canvas.width = window.innerWidth * 0.7;
+canvas.height = window.innerHeight * 0.75;
 
 class Pen {
     constructor(pad, context) {
@@ -87,3 +90,6 @@ function changePenPreset(value) {
     $("#draw-presets").val(value);
 }
 
+function clearPad() {
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+}
