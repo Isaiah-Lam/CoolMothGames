@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<head>
+    <link rel="stylesheet" href="static/styles/blackjack.css">
+</head>
+
+<div id="dealer-side">
+    <div id="deck">
+        <!-- <div id="top-card"></div> -->
+        {% for suit in range(4) %}
+            {% for value in range(1,14) %}
+                {% if value > 10 %}
+                    {% if value == 11 %}
+                        {% set card = "Jack" %}
+                    {% elif value == 12 %}
+                        {% set card = "Queen" %}
+                    {% else %}
+                        {% set card = "King" %}
+                    {% endif %}
+                    {% set value = 10 %}
+                {% else %}
+                    {% set card = value %}
+                {% endif %}
+                {% if suit % 4 == 0 %}
+                    {% set suit = "heart" %}
+                {% elif suit % 4 == 1 %}
+                    {% set suit = "club" %}
+                {% elif suit % 4 == 2 %}
+                    {% set suit = "diamond" %}
+                {% else %}
+                    {% set suit = "spade" %}
+                {% endif %}
+                <div class="card {{card}} {{suit}} {{value}}">
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+    </div>
+
+
+    <div id="dealer-hand" class="hand">
+        
+    </div>
+
+</div>
+
+<div id="player-side">
+    <button onclick="startGame()">Start Game</button>
+    <div id="player-hand" class="hand">
+
+    </div>
+</div>
+
+
+
+<script src="static/blackjack.js"></script>
+
+
+{% endblock %}
