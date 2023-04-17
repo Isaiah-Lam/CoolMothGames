@@ -50,8 +50,10 @@ class Player {
                 // this.game.platforms.push(new Platform(this.game, "basic"))
                 $("#score").text(this.game.score);
             }
-            else if (this.scoreCounter == 5) {
-                this.game.platforms.push(new Platform(this.game, "basic"))
+            else if (this.scoreCounter == 3) {
+                let typeNum = Math.floor(Math.random()*3);
+                let types = ["basic", "broken", "bouncy"];
+                this.game.platforms.push(new Platform(this.game, types[typeNum]));
             }
         }
     }
@@ -65,23 +67,33 @@ class Platform {
         this.lowerLeft = {x:Math.floor(Math.random() * (this.game.width - 110) + 10), y:10};
         this.upperRight = {x:this.lowerLeft.x+100, y:0};
         this.scored = false;
-        this.bounceHeight = -20
+        this.bounceHeight;
+        this.color;
+        if (this.type == "basic") {
+            this.bounceHeight = -15;
+            this.color = "green";
+        }
+        else if (this.type == "broken") {
+            this.bounceHeight = -15;
+            this.color = "brown";
+        }
+        else if (this.type == "bouncy") {
+            this.bounceHeight = -45;
+            this.color = "blue";
+        }
     }
     draw(context) {
-        context.beginPath();
-        context.moveTo(this.lowerLeft.x, this.lowerLeft.y);
-        context.lineTo(this.lowerLeft.x, this.upperRight.y);
-        context.moveTo(this.lowerLeft.x, this.upperRight.y);
-        context.lineTo(this.upperRight.x, this.upperRight.y);
-        context.moveTo(this.upperRight.x, this.upperRight.y);
-        context.lineTo(this.upperRight.x, this.lowerLeft.y);
-        context.moveTo(this.upperRight.x, this.lowerLeft.y);
-        context.lineTo(this.lowerLeft.x, this.lowerLeft.y);
-        context.save();
-        context.globalAlpha = 0.5;
-        context.fill();
-        context.restore();
-        context.stroke();
+        context.fillStyle = this.color;
+        // context.moveTo(this.lowerLeft.x, this.lowerLeft.y);
+        // context.lineTo(this.lowerLeft.x, this.upperRight.y);
+        // context.moveTo(this.lowerLeft.x, this.upperRight.y);
+        // context.lineTo(this.upperRight.x, this.upperRight.y);
+        // context.moveTo(this.upperRight.x, this.upperRight.y);
+        // context.lineTo(this.upperRight.x, this.lowerLeft.y);
+        // context.moveTo(this.upperRight.x, this.lowerLeft.y);
+        // context.lineTo(this.lowerLeft.x, this.lowerLeft.y);
+        // context.fill();
+        context.fillRect(this.lowerLeft.x, this.upperRight.y, this.upperRight.x-this.lowerLeft.x, this.lowerLeft.y-this.upperRight.y);
     }
     // update() {
     //     this.lowerLeft.y -= this.game.gravity;
@@ -129,6 +141,9 @@ class Game {
             if (collision) {
                 this.gravity = platform.bounceHeight;
                 platform.jumpedOn = true;
+                if (platform.type == "broken") {
+                    this.platforms.splice(this.platforms.indexOf(platform), 1);
+                }
             }
             
         }

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<head>
+    <link rel="stylesheet" href="static/styles/games.css">
+</head>
+
+<div id="filters-div">
+    <div id="filter-input-div">
+        <select name="filter-category" id="filter-category">
+            <option value="title" selected>Title</option>
+            <option value="genre">Genre</option>
+        </select>
+        <select name="filter-type" id="filter-type">
+            <option value="and" selected>And</option>
+            <option value="or">Or</option>
+            <option value="not">Not</option>
+        </select>
+        <input type="text" name="filter-input" id="filter-input">
+        <button onclick="addFilter(this.parentElement.firstElementChild.value, this.parentElement.firstElementChild.nextElementSibling.value, this.previousElementSibling.value)">Add</button>
+    </div>
+    <div id="current-filters-div">
+        
+    </div>
+</div>
+
+<script src="static/games.js"></script>
+
+{% endblock %}
