@@ -1,16 +1,19 @@
 <html>
 
 	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap" rel="stylesheet"> 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="static/styles/style.css">
 <!--        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<title>CoolMothGames</title>
 	</head>
-
+<div id="page">
 	<header>
 		<div id="nav-bar">
-			<h1>CoolMothGames</h1>
+			<h1 class="coolmothgames">CoolMothGames</h1>
 			<ul id="nav-list">
 				<li class="nav-list-item"><a class="nav-link" href="/">Home</a></li>
 				<li class="nav-list-item"><a class="nav-link" href="/games">Games</a></li>
@@ -25,10 +28,40 @@
 		</div>
 	</header>
 
+<div class="container">
 	{% block body %}
 	{% endblock %}
+</div>
 
+
+
+
+	<footer id="footercontainer">
+	<div class="footer">
+	<div class="row" id="socials">
+	<a href="#"><i class="fa fa-facebook"></i></a>
+	<a href="#"><i class="fa fa-instagram"></i></a>
+	<a href="#"><i class="fa fa-youtube"></i></a>
+	<a href="#"><i class="fa fa-twitter"></i></a>
+	</div>
+	
+	<div class="row">
+	<ul>
+	<li><a href="#">Contact us</a></li>
+	<li><a href="#">Our Services</a></li>
+	<li><a href="#">Privacy Policy</a></li>
+	<li><a href="#">Terms & Conditions</a></li>
+	<li><a href="#">Career</a></li>
+	</ul>
+	</div>
+	
+	<div class="row">
+	CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
+	</div>
+	</div>
+	</footer>
 
 	<script src="static/script.js"></script>
+	
 
 </html>
