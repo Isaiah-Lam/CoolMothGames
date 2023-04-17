@@ -75,6 +75,7 @@ class Leaderboards(database.Model) :
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
+# app.config['SESSION_FILE_THRESHOLD'] = 1
 Session(app)
 
 
@@ -232,6 +233,7 @@ def chess():
 
 
 
+
 @app.route('/memory-forums', methods=["GET"])
 def memForums():
     try:
@@ -300,17 +302,45 @@ def forumsSubmit():
         route = request.form["gameid"]
     return redirect(routes[route])
 
-
 @app.route('/blackjack', methods=["GET"])
 def blackjack():
     return render_template("blackjack.html", loggedIn=(session.get("userid") is not None))
 
 
 
-@app.route('/spacewar', methods=["GET"])
+@app.route('/starwar', methods=["GET"])
 def spacewar():
     return render_template("spacewar.html", loggedIn=(session.get("userid") is not None))
 
+@app.route('/starwar', methods=["POST"])
+def spacewarScore():
+    submitScore(6, request.form["score"])
+    return render_template("spacewar.html", loggedIn=(session.get("userid") is not None))
+
+
+@app.route('/drawpad')
+def drawpad():
+    return render_template("drawpad.html", loggedIn=(session.get("userid") is not None))
+
+
+@app.route('/flappymoth', methods=["GET"])
+def flappymoth():
+    return render_template("flappymoth.html", loggedIn=(session.get("userid") is not None))
+
+@app.route("/flappymoth", methods=["POST"])
+def flappyMothScore():
+    submitScore(7, request.form["score"])
+    return render_template("flappymoth.html", loggedIn=(session.get("userid") is not None))
+
+
+@app.route("/doodlemoth", methods=["GET"])
+def doodlemoth():
+    return render_template("doodlemoth.html")
+
+@app.route("/doodlemoth", methods=["POST"])
+def doodleMothScore():
+    submitScore(8, request.form["score"])
+    return render_template("doodlemoth.html", loggedIn=(session.get("userid") is not None))
 
 
 # function for submitting score to leaderboard
@@ -326,7 +356,7 @@ def submitScore(gameID, score, difficulty=None):
 
 
 
-    
+
 
 
 

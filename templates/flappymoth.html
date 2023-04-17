@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+
+    <head>
+        <!-- <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+        <link rel="stylesheet" href="static/styles/flappymoth.css">
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </head>
+
+
+    <body id="body">
+        <span>Score:</span>
+        <span id="score">0</span>
+        <div>
+            <p>Press SPACE to start</p>
+        </div>
+        <canvas id="canvas"></canvas>
+        
+        <div id="img-div">
+            <img id="moth-vertical" src="static/imgs/sprites/mothvertical.png" alt="">
+            <img id="moth-horizontal" src="static/imgs/sprites/mothhorizontal.png" alt="">
+            <img id="moth-up" src="static/imgs/sprites/mothangleup.png" alt="">
+            <img id="moth-down" src="static/imgs/sprites/mothangledown.png" alt="">
+        </div>
+
+        <script src="static/flappymoth.js"></script>
+    </body>
+
+
+{% endblock %}
