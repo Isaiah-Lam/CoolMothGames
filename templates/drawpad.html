@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block body %}
+
+    <head>
+        <!-- <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+        <link rel="stylesheet" href="static/styles/drawpad.css">
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script type="module">
+            import Canvas2Image from '/static/canvas2image.js';
+            $("#save-btn").click(function () {
+                Canvas2Image.saveAsPNG(canvas, canvas.width, canvas.height)
+            })
+        </script>
+    </head>
+
+
+    <body>
+        <div id="draw-tools">
+            <button id="save-btn">Save Drawing</button>
+            <button onclick="clearPad()">Clear Pad</button>
+            <p>Presets:</p>
+            <select id="draw-presets" onchange="changePenPreset(this.value)">
+                <option value="pen" selected>Pen</option>
+                <option value="marker">Marker</option>
+                <option value="highlighter">Highlighter</option>
+                <option value="pencil">Pencil</option>
+                <option value="custom">Custom</option>
+            </select>
+            <p>Color:</p>
+            <select id="draw-color" onchange="changePenAttr('color', this.value)">
+                <option value="black" selected>Black</option>
+                <option value="green">Green</option>
+                <option value="red">Red</option>
+                <option value="yellow">Yellow</option>
+                <option value="blue">Blue</option>
+                <option value="purple">Purple</option>
+                <option value="orange">Orange</option>
+                <option value="white">White</option>
+                <option value="gray">Gray</option>
+            </select>
+            <p>Thickness:</p>
+            <select id="draw-thickness" onchange="changePenAttr('thickness', this.value)">
+                <option value=1 selected>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+                <option value=6>6</option>
+                <option value=7>7</option>
+                <option value=8>8</option>
+                <option value=9>9</option>
+                <option value=10>10</option>
+            </select>
+            <p>Opacity:</p>
+            <select id="draw-opacity" onchange="changePenAttr('opacity', this.value)">
+                <option value=.1>.1</option>
+                <option value=.2>.2</option>
+                <option value=.3>.3</option>
+                <option value=.4>.4</option>
+                <option value=.5>.5</option>
+                <option value=.6>.6</option>
+                <option value=.7>.7</option>
+                <option value=.8>.8</option>
+                <option value=.9>.9</option>
+                <option value=1 selected>1</option>
+            </select>
+        </div>
+        <canvas id="canvas"></canvas>
+        
+
+        <script src="static/drawpad.js"></script>
+    </body>
+
+
+{% endblock %}
