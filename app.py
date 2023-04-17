@@ -347,7 +347,7 @@ def flappyMothScore():
 
 @app.route("/doodlemoth", methods=["GET"])
 def doodlemoth():
-    return render_template("doodlemoth.html")
+    return render_template("doodlemoth.html", loggedIn=(session.get("userid") is not None))
 
 @app.route("/doodlemoth", methods=["POST"])
 def doodleMothScore():
