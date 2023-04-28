@@ -14,8 +14,10 @@
     {%endfor%}
 </div>
 <div id="leaderboard-div">
+    {% set g = namespace(lastDifficulty='') %}
     {%for game in games%}
     {% if game.gameID != 5 and game.gameID != 3 %}
+    {% set g.lastDifficulty = '' %}
     <div class="leaderboard" id="{{game.gameID}}">
         
             <table class="leaderboard-table">
@@ -37,6 +39,15 @@
                 </tr>
                 {%for row in leaderboards%}
                     {%if game.gameID == row.gameID %}
+                        {% if g.lastDifficulty != row.difficulty and g.lastDifficulty != '' %}
+                            <tr class="table-row blank-row">
+                                <td class="blank-rows"></td>
+                                <td class="blank-rows"></td>
+                                <td class="blank-rows"></td>
+                                <td class="blank-rows"></td>
+                            </tr>
+                        {% endif %}
+                        {% set g.lastDifficulty = row.difficulty %}
                         <tr class="table-row">
                             <td class="rows">{{row.username}}</td>
                             <td class="rows">{{row.score}}</td>
