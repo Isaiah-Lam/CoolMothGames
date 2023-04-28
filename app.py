@@ -217,7 +217,6 @@ def connect4():
 @app.route("/leaderboards", methods=["GET"])
 def leaderboards():
     games = Games.query.order_by(Games.title).all()
-    # leaderboards = Leaderboards.query.order_by(Leaderboards.score).join(Users, Leaderboards.userID==Users.userID).all()
     try:
         leaderboards = con.execute(text(f'SELECT "boardID", "gameID", users."userID", "date", "score", "username", "difficulty" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
         return render_template("leaderboards.html", games=games, leaderboards=leaderboards, loggedIn=(session.get("userid") is not None))
@@ -250,56 +249,95 @@ def chess():
 def memForums():
     try:
         game = Games.query.filter_by(gameID='1').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 1;'))
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 1;'))
     except:
         con.rollback()
         return redirect("/memory-forums")
-    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/rps-forums', methods=["GET"])
 def rpsForums():
     try:
         game = Games.query.filter_by(gameID='2').first()
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 2;'))
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 2;'))
     except:
         con.rollback()
         return redirect("/rps-forums")
-    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/tictactoe-forums', methods=["GET"])
 def tttForums():
     try:
         game = Games.query.filter_by(gameID='3').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 3;'))
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 3;'))
     except:
         con.rollback()
         return redirect("/tictactoe-forums")
-    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/minesweeper-forums', methods=["GET"])
 def mineForums():
     try: 
         game = Games.query.filter_by(gameID='4').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 4;'))
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 4;'))
     except:
         con.rollback()
         return redirect("/minesweeper-forums")
-    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/connect4-forums', methods=["GET"])
 def connect4Forums():
     try:
         game = Games.query.filter_by(gameID='5').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 5;'))
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 5;'))
     except:
         con.rollback()
-        return redirect("connect4-forums")
-    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game)
+        return redirect("/connect4-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
+
+@app.route('/starwar-forums', methods=["GET"])
+def starwarForums():
+    try:
+        game = Games.query.filter_by(gameID='6').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 6;'))
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 6;'))
+    except:
+        con.rollback()
+        return redirect("/starwar-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
+
+@app.route('/flappymoth-forums', methods=["GET"])
+def flappymothForums():
+    try:
+        game = Games.query.filter_by(gameID='7').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 7;'))
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 7;'))
+    except:
+        con.rollback()
+        return redirect("/flappymoth-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
+
+@app.route('/doodlemoth-forums', methods=["GET"])
+def doodlemothForums():
+    try:
+        game = Games.query.filter_by(gameID='8').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 8;'))
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 8;'))
+    except:
+        con.rollback()
+        return redirect("/doodlemoth-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/forums', methods=['POST'])
 def forumsSubmit():
     if (session.get("userid") is None):
         flash("You must be logged in to submit to the forums")
+        
     else:
         flash("Comment Submitted")
         try:
@@ -310,8 +348,9 @@ def forumsSubmit():
         message = Messages(**content)
         database.session.add(message)
         database.session.commit()
-        routes = {"1":"/memory-forums", "2":"/rps-forums", "3":"/tictactoe-forums", "4":"/minesweeper-forums","5":"/connect4-forums"}
-        route = request.form["gameid"]
+    routes = {"1":"/memory-forums", "2":"/rps-forums", "3":"/tictactoe-forums", "4":"/minesweeper-forums","5":"/connect4-forums",
+                  "6":"/starwar-forums", "7":"/flappymoth-forums", "8":"/doodlemoth-forums"}
+    route = request.form["gameid"]
     return redirect(routes[route])
 
 @app.route('/blackjack', methods=["GET"])
