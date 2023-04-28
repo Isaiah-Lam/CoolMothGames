@@ -2,6 +2,51 @@
 {% block body %}
 
 <head>
+    <link rel="stylesheet" href="/static/styles/games.css">
+</head>
+<body>
+    <div class="games-container">
+    {% set img = namespace(url='') %}
+    {% for game in games %}
+        <div class="game-div">
+            {% set img.url = 'game'+(game.gameID|string) %}
+            <img src="/static/imgs/gamephotos/{{img.url}}.jpg" height="100%" width="100%" alt="">
+            <a href="/loadgame?game={{game.gameID}}">{{game.title}}</a>
+        </div>
+    {% endfor %}
+    </div>
+</body>
+
+
+<footer id="footercontainer">
+    <div class="footer">
+        <div class="row" id="socials">
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a>
+        <a href="#"><i class="fa fa-youtube"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+    </div>
+
+    <div class="row">
+        <ul>
+            <li><a href="#">Contact us</a></li>
+            <li><a href="#">Our Services</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Career</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+    CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
+    </div>
+    </div>
+</footer>
+
+    {% endblock %}
+
+
+<head>
     <link rel="stylesheet" href="static/styles/games.css">
 </head>
 
