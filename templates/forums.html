@@ -11,18 +11,47 @@
 {% endwith %}
 
 <div class="container">
-    <div class="forum">
-        <h3>{{game.title}}</h3>
+    <div class="comments">
+        <h3 class="title">{{game.title}}</h3>
         {% for message in messages %}
-            <div class="message-box">
-                <p class="message">{{message.message}}</p>
-            </div>
+                    {% if message.replyTo %}
+                        {% for reply in replies %}
+                            {% if message.replyTo == reply.messageID %}
+                        <div class="message-box">
+                            <div class="column">
+                                <div class="message-box quote" style="margin-left: 5px;"> 
+                                    <p class="username">{{reply.username}}</p>
+                                    <p class="message">{{reply.message}}</p>
+                                </div>
+                                <div class="row">
+                                    <p class="username">{{message.username}}</p>
+                                    <p class="message">{{message.message}}</p>
+                                    <div class="reply box-end">
+                                        <button class="reply-btn" id="{{message.username}}">Reply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            {% endif %}
+                        {%endfor%}
+                    {% else %}
+                <div class="message-box">
+                    <p class="username">{{message.username}}</p>
+                    <p class="message">{{message.message}}</p>
+                    <div class="reply box-end">
+                        <button class="reply-btn" id="{{message.username}}">Reply</button>
+                    </div>
+                </div>
+                    {% endif %}
         {% endfor %}
-        <form action="/forums" method="post">
+
+        <form action="/forums" method="post" class="submit-form" id="submit">
+            <p id="reply-to"></p>
             <textarea class="text-area"  placeholder="Share your thoughts!" name="message"></textarea>
             <input type="text" name="gameid" style="display: none" value="{{game.gameID}}">
             <input type="submit" value="Submit">
         </form>
+
     </div>
 </div>
 
@@ -51,5 +80,56 @@
 	</div>
 </footer>
 
+<footer id="footercontainer">
+	<div class="footer">
+        <div class="row" id="socials">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-youtube"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+        </div>
+	
+        <div class="row">
+            <ul>
+                <li><a href="#">Contact us</a></li>
+                <li><a href="#">Our Services</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms & Conditions</a></li>
+                <li><a href="#">Career</a></li>
+            </ul>
+        </div>
+	
+        <div class="row">
+            CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
+        </div>
+	</div>
+</footer>
+
+<footer id="footercontainer">
+	<div class="footer">
+        <div class="row" id="socials">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-youtube"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+        </div>
+	
+        <div class="row">
+            <ul>
+                <li><a href="#">Contact us</a></li>
+                <li><a href="#">Our Services</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms & Conditions</a></li>
+                <li><a href="#">Career</a></li>
+            </ul>
+        </div>
+	
+        <div class="row">
+            CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
+        </div>
+	</div>
+</footer>
+
+<script src="static/forums.js"></script>
 
 {% endblock %}

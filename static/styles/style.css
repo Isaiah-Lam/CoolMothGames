@@ -32,7 +32,9 @@
 }
 
 #footercontainer{
-    /* position: relative; */
+    height: 45vh;
+    position: relative;
+    bottom: 0;
     width: 100%;
     background-image: url("/static/imgs/Footerbackground.jpg");
     background-size: 200px;

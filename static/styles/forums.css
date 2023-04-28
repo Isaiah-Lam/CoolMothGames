@@ -4,15 +4,87 @@
     margin: 10px;
 }
 
-.forum {
+.title {
+    margin-bottom: 10px;
+}
+
+.comments {
     display: flex;
     flex-direction: column;
     text-align: center;
-    border: 1px black;
+    width: 60%;
     margin: 10px auto;
+    padding: 15px;
 }
 
 .text-area {
     resize: none;
     height: 30px;
+}
+
+.submit-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.message-box {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid green;
+    padding: 15px;
+}
+
+.username {
+    border-right: 1px solid green;
+    padding: 15px;
+    align-self: center;
+}
+
+.message {
+    padding: 15px;
+    text-align: left;
+}
+
+.reply {
+    justify-self: flex-end;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.box-end {
+    margin-left: auto;
+}
+
+.reply-btn {
+    border: none;
+    background: none;
+    text-decoration: underline;
+    color: grey;
+}
+
+.reply-btn:hover {
+    color: black
+}
+
+#reply-to {
+    display: none;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.row {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.quote {
+    font-style: italic;
+    background-color: whitesmoke;
 }
