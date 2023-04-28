@@ -2,7 +2,8 @@ $(document).ready(function () {
     sessionStorage.clear();
 });
 
-function changeDifficulty(difficulty) {
+function changeDifficulty(selector, difficulty) {
+    selector.remove();
     sessionStorage.setItem("difficulty", difficulty);
     let pairs, rows, cols;
     if (difficulty == "Easy") {
@@ -22,6 +23,9 @@ function changeDifficulty(difficulty) {
     }
     sessionStorage.setItem("pairs", pairs);
     let board = document.getElementById("mem-table");
+    // while (board.firstChild) {
+    //     board.firstChild.remove();
+    // }
     for (let r=0; r<rows; r++) {
         let row = document.createElement("tr");
         $(row).addClass("mem-row");
@@ -70,6 +74,7 @@ function startGame(btn) {
                     }
                     if (sharedClasses >= 3) {
                         setTimeout(() => {
+                            // $(".mem-cell").off('click');
                             $(faceupMoths[0]).css("visibility", "hidden");
                             $(faceupMoths[1]).css("visibility", "hidden");
                             $(faceupMoths[0]).removeClass("faceup");
@@ -81,7 +86,7 @@ function startGame(btn) {
                                 $("#difficulty").val(sessionStorage.getItem("difficulty"));
                                 $("#memory-form").submit();
                             }
-                        }, 2500);
+                        }, 1000);
                             
                     }
                     else {
@@ -90,7 +95,7 @@ function startGame(btn) {
                                 this.classList.remove("faceup");
                                 this.classList.add("facedown");
                             })
-                        }, 2500);
+                        }, 2000);
                     }
                 }
             });

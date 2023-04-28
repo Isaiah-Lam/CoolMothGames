@@ -1,10 +1,56 @@
 {% extends 'base.html' %}
 {% block body %}
 
+<head>
+    <link rel="stylesheet" href="static/styles/pigame.css">
+</head>
 
 
+<body>
+
+    <div id="cover-div"></div>
+    
+    <div id="start-div">
+        <h1 style="text-shadow: 1px 1px black">Choose a game mode:</h1>
+        <div id="game-desc-div">
+            <div class="game-desc" id="speed-mode-btn-desc"><h3>Speed Mode:</h3><br><h4>Get as many digits correct as you can in 30 seconds to climb the leaderboards</h4></div>
+            <div class="game-desc" id="acc-mode-btn-desc"><h3>Practice Mode:</h3><br><h4>Practice your skills. No timer, no penalties</h4></div>
+        </div>
+        
+        <button class="mode-btn" id="speed-mode-btn" onclick="setupGame('speed')" onmouseenter="showDesc(this.id)" onmouseleave="hideDesc(this.id)">Speed</button>
+        <button class="mode-btn" id="acc-mode-btn" onclick="setupGame('practice')" onmouseenter="showDesc(this.id)" onmouseleave="hideDesc(this.id)">Practice</button>
+    </div>
+
+    <div id="stopwatch-div" style="float: left;">
+        <span id="seconds">0</span>
+        <span id="centiseconds">00</span>
+    </div>
+
+    <div id="digit-line">
+        <div id="end-digit-1" class="digit end-digit">3</div>
+        <div id="mid-digit-1" class="digit mid-digit">.</div>
+        <div class="digit cur-digit">?</div>
+        <div class="digit mid-digit">?</div>
+        <div class="digit end-digit">?</div>
+    </div>
+
+    <div id="keypad">
+        <div id="key7" class="key"><p class="key-text">7</p></div>
+        <div id="key8" class="key"><p class="key-text">8</p></div>
+        <div id="key9" class="key"><p class="key-text">9</p></div>
+        <div id="key4" class="key"><p class="key-text">4</p></div>
+        <div id="key5" class="key"><p class="key-text">5</p></div>
+        <div id="key6" class="key"><p class="key-text">6</p></div>
+        <div id="key1" class="key"><p class="key-text">1</p></div>
+        <div id="key2" class="key"><p class="key-text">2</p></div>
+        <div id="key3" class="key"><p class="key-text">3</p></div>
+        <div id="key0" class="key"><p class="key-text">0</p></div>
+    </div>
+
+</body>
 
 
+<script src="static/pigame.js"></script>
 
 
 {% endblock %}
