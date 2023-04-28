@@ -35,7 +35,7 @@
 
 #footercontainer{
     height: 45vh;
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
     background-image: url("/static/imgs/Footerbackground.jpg");
