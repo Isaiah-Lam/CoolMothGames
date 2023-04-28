@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#digit-line {
+    border: 1px solid blue;
+    display: flex;
+    justify-content: space-evenly;
+    height: 10%;
+    width: 55vw;
+    margin: 25px auto;
+    padding: 10px;
+    align-items: center;
+}
+
+.digit {
+    border: 1px solid green;
+    height: 100%;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: xx-large;
+}
+
+.end-digit {
+    height: 50%;
+    width: 5%;
+    font-size: larger;
+}
+
+.mid-digit {
+    font-size: x-large;
+    height: 75%;
+    width: 7.5%;
+}
+
+#keypad {
+    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 30vw;
+    height: 40vw;
+    margin: 10px auto;
+}
+
+.key {
+    width: 33%;
+    height: 25%;
+    border: 1px solid purple;
+    border-radius: 10000px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.key:hover {
+    background-color: gray;
+    color: white;
+}
+
+.key-text {
+    font-size: xx-large;
+}
+
+.pressed-correct {
+    background-color: green;
+    color: white;
+}
+
+.pressed-wrong {
+    background-color: red;
+    color: white;
+}
+
+#cover-div {
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 110%;
+    top: 15%;
+    position: absolute;
+}
+
+#start-div {
+    position: absolute;
+    border: 2px solid black;
+    border-radius: 25px;
+    top: 20%;
+    left: 32.5%;
+    width: 35vw;
+    height: 75vh;
+    background-color: teal;
+    padding: 25px;
+    color: purple;
+}
+
+.mode-btn {
+    background-color: transparent;
+    color: purple;
+    padding: 10px;
+    text-align: center;
+    width: 25%;
+    height: 10%;
+    min-width: fit-content;
+    border: 2px solid purple;
+    border-radius: 3px;
+    display: block;
+    margin: 15px auto;
+    font-size: larger;
+    transition: 0.5s;
+}
+
+.mode-btn:hover {
+    width: 30%;
+    height: 12%;
+}
+
+#game-desc-div {
+    height: 25%;
+    display: flex;
+    align-items: center;
+}
+
+.game-desc {
+    display: none;
+}

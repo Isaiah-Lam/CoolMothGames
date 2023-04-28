@@ -298,29 +298,30 @@ window.addEventListener('load', function() {
         }
         executeMoves(game) {
             Object.keys(this.movementControls).forEach(key=> {
-                if (this.movementControls[key].pressed) {
-                    if (key == "w") {
+                let lowKey = key.toLowerCase()
+                if (this.movementControls[lowKey].pressed) {
+                    if (lowKey == "w") {
                         this.player.moveup();
                     }
-                    else if (key == "a") {
+                    else if (lowKey == "a") {
                         this.player.moveleft();
                     }
-                    else if (key == "s") {
+                    else if (lowKey == "s") {
                         this.player.movedown();
                     }
-                    else if (key == "d") {
+                    else if (lowKey == "d") {
                         this.player.moveright();
                     }
-                    else if (key == "click" && this.framesSinceLastShot > this.player.shotSpeed) {
-                        this.bullets.push(new Bullet(this, this.player, this.movementControls[key].x, this.movementControls[key].y, "basic"));
+                    else if (lowKey == "click" && this.framesSinceLastShot > this.player.shotSpeed) {
+                        this.bullets.push(new Bullet(this, this.player, this.movementControls[lowKey].x, this.movementControls[lowKey].y, "basic"));
                         this.framesSinceLastShot = 0;
                     }
                 }
                 else {
-                    if ((key == "w" && !this.movementControls["s"].pressed) || (key == "s" && !this.movementControls["w"].pressed)) {
+                    if ((lowKey == "w" && !this.movementControls["s"].pressed) || (lowKey == "s" && !this.movementControls["w"].pressed)) {
                         this.player.stopmovey();
                     }
-                    else if ((key == "a" && !this.movementControls["d"].pressed) || (key == "d" && !this.movementControls["a"].pressed)) {
+                    else if ((lowKey == "a" && !this.movementControls["d"].pressed) || (lowKey == "d" && !this.movementControls["a"].pressed)) {
                         this.player.stopmovex();
                     }
                 }

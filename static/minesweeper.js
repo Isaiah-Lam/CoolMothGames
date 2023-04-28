@@ -103,7 +103,7 @@ function firstClick(id) {
             }
             spotsLeft--;
             $("#row"+r+"col"+c).off('click').on("click", function () {
-                click(this);
+                click(this, true);
             });
         }
     }
@@ -128,13 +128,13 @@ function firstClick(id) {
             }
         }
     }
-    click(startCells[0]);
+    click(startCells[0], true);
     timerActive = true;
     stopwatch();
 }
 
 
-function click(cell) {
+function click(cell, userClick) {
     let rows = sessionStorage.getItem("height");
     let cols = sessionStorage.getItem("width");
     if ($(cell).attr("background-color") != "darkorange") {
@@ -154,13 +154,15 @@ function click(cell) {
                         // setTimeout(() => {
                         // console.log("row"+newCoords["y"]+"col"+newCoords["x"]);
                         if ($(document.getElementById("row"+newCoords["y"]+"col"+newCoords["x"]).firstChild).hasClass("hidden")) {
-                            click(document.getElementById("row"+newCoords["y"]+"col"+newCoords["x"]));
+                            click(document.getElementById("row"+newCoords["y"]+"col"+newCoords["x"]), false);
                         }
                         // }, 1000);
                     }
                 }
             }
-            checkWin();
+            if (userClick) {
+                checkWin();
+            }
         }
     }
     

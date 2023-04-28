@@ -1,6 +1,6 @@
 .leaderboard-table {
-    border: 1px solid;
-    margin: 10px auto;
+    border: 4px solid black;
+    margin: 20px auto;
     background-color: seagreen;
     width: 50%;
     border-collapse : collapse;
@@ -17,7 +17,7 @@
 }
 
 .leaderboard {
-    margin: 5px auto;
+    margin: 40px auto;
 }
 
 .game_select {
@@ -28,5 +28,13 @@
 .game-title {
     margin: 5px auto;
     text-align: center;
+}
+
+.blank-row {
+    background-color: lightgreen;
+}
+
+.blank-rows {
+    padding: 8px;
 }
 

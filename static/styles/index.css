@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#home-flex {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid black;
+    flex-direction: column;
+    height: 75vh;
+}
+
+.flex-item {
+    border: 1px solid;
+    border-radius: 15px;
+}
+
+#featured-div {
+    border-color: red;
+    width: 60%;
+
+    height: 49vh;
+}
+
+#leaderboard-div {
+    border-color: blue;
+    width: 30%;
+    
+    height: 74vh;
+}
+
+#forums-div {
+    border-color: green;
+    width: 60%;
+    
+    height: 25vh;
+}
