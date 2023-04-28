@@ -50,5 +50,9 @@
 }
 
 #table-div {
+    height: 100vh;
     visibility: hidden;
+}
+body{
+    height: 100vh;
 }
