@@ -146,15 +146,12 @@ def logout():
     session["userid"] = None
     session["username"] = None
     return redirect('/account')
-
-# @app.route('/account', methods=["GET"])
-# def account():
-#     return render_template('account.html')
-    
+ 
 
 @app.route('/games')
 def gamesPage():
-    return render_template("games.html", loggedIn=(session.get("userid") is not None))
+    games = Games.query.order_by(Games.title).all()
+    return render_template("games.html", games=games, loggedIn=(session.get("userid") is not None))
 
 @app.route('/tictactoe', methods=["GET"])
 def tictactoe():
@@ -392,7 +389,36 @@ def doodlemoth():
 @app.route("/doodlemoth", methods=["POST"])
 def doodleMothScore():
     submitScore(8, request.form["score"])
-    return render_template("doodlemoth.html", loggedIn=(session.get("userid") is not None))
+    return redirect("/doodlemoth")
+
+@app.route('/loadgame', methods=["GET"])
+def loadGame():
+    id = request.args.get('game')
+    print(id)
+    if(id == "1"):
+        return redirect("/memory")    
+    elif(id == "2"):
+        return redirect("/rps")
+    elif(id == "3"):
+        return redirect("/tictactoe")
+    elif(id == "4"):
+        return redirect("/minesweeper")      
+    elif(id == "5"):
+        return redirect("/connect4")
+    elif(id == "6"):
+        return redirect("/starwar")
+    elif(id == "7"):
+        return redirect("/flappymoth")
+    elif(id == "8"):
+        return redirect("/doodlemoth")
+    elif(id == "9"):
+        return redirect("/drawpad")
+    elif(id == "10"):
+        return redirect("/pigame")
+    elif(id == "11"):
+        return redirect("/blackjack")
+    else:
+        return redirect("/games")
 
 
 # function for submitting score to leaderboard

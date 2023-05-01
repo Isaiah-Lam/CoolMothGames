@@ -16,3 +16,7 @@
 #img-div {
     display: none;
 }
+
+body{
+    height:100vh;
+}
