@@ -6,13 +6,46 @@ var timerActive = true;
 var timerStarted = false;
 
 $(document).ready(function () {
-    $(".key").click(function () {
-        if (!timerStarted) {
-            stopwatch();
-        }
-        let input = $(this.firstElementChild).text();
-        keyPress(input);
-    });
+    // $(".key").click(function () {
+    //     if (!timerStarted) {
+    //         stopwatch();
+    //     }
+    //     let input = $(this.firstElementChild).text();
+    //     keyPress(input);
+    // });
+
+    let keyElements = document.getElementsByClassName("key");
+    for (let i=0; i<keyElements.length; i++) {
+        keyElements[i].addEventListener('mousedown', e => {
+            $(keyElements[i]).removeClass('key-temp');
+            if (!timerStarted) {
+                stopwatch();
+            }
+            let input = $(keyElements[i].firstElementChild).text();
+            if (keyPress(input)) {
+                $(keyElements[i]).addClass("pressed-correct");
+            }
+            else {
+                $(keyElements[i]).addClass("pressed-wrong");
+            }
+        });
+
+        keyElements[i].addEventListener('mouseup', e=> {
+            if ($(keyElements[i]).hasClass('pressed-correct') || $(keyElements[i]).hasClass('pressed-wrong')) {
+                $(keyElements[i]).removeClass("pressed-correct");
+                $(keyElements[i]).removeClass("pressed-wrong");
+            }
+            $(keyElements[i]).removeClass('key-temp');
+        });
+
+        keyElements[i].addEventListener('mouseleave', e => {
+            if ($(keyElements[i]).hasClass('pressed-correct') || $(keyElements[i]).hasClass('pressed-wrong')) {
+                $(keyElements[i]).removeClass("pressed-correct");
+                $(keyElements[i]).removeClass("pressed-wrong");
+            }
+            $(keyElements[i]).removeClass('key-temp');
+        });
+    }
 
     window.addEventListener('keydown', e => {
         if (keys.includes(e.key)) {
@@ -40,22 +73,39 @@ $(document).ready(function () {
 function keyPress(input) {
     if (input == pi.substring(0,1)) {
         nextDigit(input);
+        $("#score").text(parseInt($("#score").text())+1);
         return true;
     }
     else {
-        
+        return false;
     }
 }
 
 function nextDigit(num) {
     $("#end-digit-1").text($("#mid-digit-1").text());
     $("#mid-digit-1").text(num);
+    // $(".cur-digit").text(num);
+    // let div = document.createElement("div");
+    // $(div).addClass("digit");
+    // $(div).addClass("end-digit")
+    // $(div).text("?");
+    // document.getElementById("digit-line").appendChild(div);
     score++;
     pi = pi.substring(1);
 }
 
 function endGame() {
     timerActive = false;
+    let scoreForm = document.createElement("form");
+    $(scoreForm).attr("action", "/pigame");
+    $(scoreForm).attr("method", "post");
+    let scoreInput = document.createElement("input");
+    $(scoreInput).attr("type", "number");
+    $(scoreInput).attr("name", "score");
+    $(scoreInput).val($("#score").text());
+    scoreForm.appendChild(scoreInput);
+    document.getElementById("stopwatch-div").appendChild(scoreForm);
+    $(scoreForm).submit();
 }
 
 function showDesc(id) {
@@ -83,6 +133,7 @@ function stopwatch() {
             seconds++;
             if (seconds == 30) {
                 timerActive = false;
+                endGame();
             }
             centiseconds = 0;
         }

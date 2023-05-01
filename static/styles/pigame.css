@@ -13,6 +13,7 @@
     margin: 25px auto;
     padding: 10px;
     align-items: center;
+    /* overflow-x: scroll; */
 }
 
 .digit {
@@ -57,7 +58,7 @@
     justify-content: center;
 }
 
-.key:hover {
+.key-temp:hover {
     background-color: gray;
     color: white;
 }
