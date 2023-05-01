@@ -84,7 +84,8 @@ function firstClick(id) {
     let mines = sessionStorage.getItem("mines");
     let spotsLeft = rows*cols;
     var startCells = [cell];
-    let startCoords = {"x":parseInt(id.charAt(7)), "y":parseInt(id.charAt(3))};
+    let startCoords = {"x":parseInt(id.substring(7)), "y":parseInt(id.substring(3,5))};
+    console.log(startCoords);
     var coords = [{"x":0,"y":1},{"x":1,"y":1},{"x":1,"y":0},{"x":1,"y":-1},{"x":0,"y":-1},{"x":-1,"y":-1},{"x":-1,"y":0},{"x":-1,"y":1}];
     for (let i=0; i<8; i++) {
         let newCoords = {"x":startCoords["x"]+coords[i]["x"], "y":startCoords["y"]+coords[i]["y"]}
@@ -143,7 +144,7 @@ function click(cell, userClick) {
             endGame(false);
         }
         else {
-            let startCoords = {"x":parseInt(cell.id.charAt(7)), "y":parseInt(cell.id.charAt(3))};
+            let startCoords = {"x":parseInt(cell.id.substring(7)), "y":parseInt(cell.id.substring(3,5))};
             $(cell).css("background-color", "gray");
             $(cell.firstChild).removeClass("hidden");
             if ($(cell.firstChild).text() == "0") {
