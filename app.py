@@ -48,6 +48,7 @@ class Ratings(database.Model) :
     gameID = database.Column(database.Integer, database.ForeignKey("games.gameID"))
     review = database.Column(database.String(255))
     rating = database.Column(database.Integer)
+    userID = database.Column(database.Integer, database.ForeignKey("users.userID"))
 
 class Messages(database.Model) :
     messageID = database.Column(database.Integer, primary_key = True)
@@ -333,11 +334,45 @@ def doodlemothForums():
         return redirect("/doodlemoth-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
+@app.route('/drawpad-forums', methods=["GET"])
+def drawpadForums():
+    try:
+        game = Games.query.filter_by(gameID='9').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 9;'))
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 9;'))
+    except:
+        con.rollback()
+        return redirect("/drawpad-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
+
+@app.route('/pigame-forums', methods=["GET"])
+def pigameForums():
+    try:
+        game = Games.query.filter_by(gameID='10').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 10;'))
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 10;'))
+    except:
+        con.rollback()
+        return redirect("/pigame-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
+
+@app.route('/blackjack-forums', methods=["GET"])
+def blackjackForums():
+    try:
+        game = Games.query.filter_by(gameID='11').first()
+        replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 11;'))
+        messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 11;'))
+    except:
+        con.rollback()
+        return redirect("/blackjack-forums")
+    return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
+
+
+
 @app.route('/forums', methods=['POST'])
 def forumsSubmit():
     if (session.get("userid") is None):
         flash("You must be logged in to submit to the forums")
-        
     else:
         flash("Comment Submitted")
         try:
@@ -350,6 +385,143 @@ def forumsSubmit():
         database.session.commit()
     routes = {"1":"/memory-forums", "2":"/rps-forums", "3":"/tictactoe-forums", "4":"/minesweeper-forums","5":"/connect4-forums",
                   "6":"/starwar-forums", "7":"/flappymoth-forums", "8":"/doodlemoth-forums"}
+    route = request.form["gameid"]
+    return redirect(routes[route])
+
+@app.route('/memory-ratings', methods=['GET'])
+def memoryRating():
+    try:
+        game = Games.query.filter_by(gameID='1').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 1;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/rps-ratings', methods=['GET'])
+def rpsRating():
+    try:
+        game = Games.query.filter_by(gameID='2').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 2;'))
+    except:
+        con.rollback()
+        return redirect("/rps-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/tictactoe-ratings', methods=['GET'])
+def tttRating():
+    try:
+        game = Games.query.filter_by(gameID='3').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 3;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/minesweeper-ratings', methods=['GET'])
+def minesweeperRating():
+    try:
+        game = Games.query.filter_by(gameID='4').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 4;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/connect4-ratings', methods=['GET'])
+def connect4Rating():
+    try:
+        game = Games.query.filter_by(gameID='5').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 5;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/starwar-ratings', methods=['GET'])
+def starwarRating():
+    try:
+        game = Games.query.filter_by(gameID='6').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 6;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/flappymoth-ratings', methods=['GET'])
+def flappymothRating():
+    try:
+        game = Games.query.filter_by(gameID='7').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 7;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/doodlemoth-ratings', methods=['GET'])
+def doodlemothRating():
+    try:
+        game = Games.query.filter_by(gameID='8').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 8;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/drawpad-ratings', methods=['GET'])
+def drawpadRating():
+    try:
+        game = Games.query.filter_by(gameID='9').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 9;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/pigame-ratings', methods=['GET'])
+def pigameRating():
+    try:
+        game = Games.query.filter_by(gameID='10').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 10;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+@app.route('/blackjack-ratings', methods=['GET'])
+def blackjackRating():
+    try:
+        game = Games.query.filter_by(gameID='11').first()
+        ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 11;'))
+    except:
+        con.rollback()
+        return redirect("/memory-ratings")
+    return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
+
+
+
+
+@app.route('/ratings', methods=["POST"])
+def ratings():
+    if (session.get("userid") is None):
+        flash("You must be logged in to submit a review")
+    else:
+        flash("Review Submitted")
+        rating = con.execute(text(f'SELECT "gameID", "userID" FROM ratings where ratings."gameID" = {request.form["gameid"]} and "userID" = {session.get("userid")};')).first()
+        if(rating):
+            print("true")
+            x = Ratings.query.filter_by(gameID=request.form["gameid"], userID=session.get("userid")).first()
+            x.review = request.form["review"]
+            x.rating = request.form["stars"]
+            database.session.commit()
+        else:
+            print("false")
+            content = {"gameID":request.form["gameid"],"review":request.form["review"], "rating":request.form["stars"],"userID":session.get("userid")}
+            message = Ratings(**content)
+            database.session.add(message)
+            database.session.commit()
+    routes = {"1":"/memory-ratings", "2":"/rps-ratings", "3":"/tictactoe-ratings", "4":"/minesweeper-ratings","5":"/connect4-ratings",
+                  "6":"/starwar-ratings", "7":"/flappymoth-ratings", "8":"/doodlemoth-ratings", "9":"/drawpad-ratings", "10":"/pigame-ratings", "11":"/blackjack-ratings"}
     route = request.form["gameid"]
     return redirect(routes[route])
 
