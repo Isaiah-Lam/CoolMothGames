@@ -426,19 +426,29 @@ window.addEventListener('load', function() {
 
     function startUpgrade(shotSpeed, range, size) {
         validUpgrades = [];
+        valid = false;
         if (shotSpeed > 0) {
             validUpgrades.push({text: "Shot Speed",click: function() {upgrade("shotspeed");$(this).dialog("close");}});
+            valid = true;
         }
         if (range < 300) {
             validUpgrades.push({text: "Range",click: function() {upgrade("range");$(this).dialog("close");}});
+            valid = true;
         }
         if (size < 5) {
             validUpgrades.push({text: "Bullet Size",click: function() {upgrade("size");$(this).dialog("close");}});
+            valid = true;
         }
         $("#dialog").dialog({
             buttons: validUpgrades
         });
-        $("#dialog").dialog("open");
+        if (valid) {
+            $("#dialog").dialog("open");
+        }
+        else{
+            game.paused = false;
+        }
+
     }
 
     function upgrade(choice) {

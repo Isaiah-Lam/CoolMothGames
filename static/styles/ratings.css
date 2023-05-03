@@ -1,0 +1,125 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.title {
+    margin-bottom: 10px;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 60%;
+    margin: 10px auto;
+    padding: 15px;
+}
+
+.text-area {
+    resize: none;
+    height: 30px;
+}
+
+.submit-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.message-box {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid green;
+    padding: 15px;
+}
+
+.username {
+    border-right: 1px solid green;
+    padding: 15px;
+    align-self: center;
+}
+
+.message {
+    padding: 15px;
+    text-align: left;
+}
+
+.box-end {
+    margin-left: auto;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.row {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.stars {
+    color: yellow;
+}
+
+.hide-visually,
+.star-rating>input {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: absolute !important;
+  height: 1px; 
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+  clip: rect(1px, 1px, 1px, 1px); /*maybe deprecated but we need to support legacy browsers */
+  clip-path: inset(50%); /*modern browsers, clip-path works inwards from each corner*/
+  white-space: nowrap; /* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
+}
+
+.star-rating {
+  font-size: 40px;
+  display: inline-flex;
+  padding: 0;
+}
+
+.star-rating:focus-within {
+  outline: 3px solid #add8e6;
+}
+
+.star-rating label {
+  cursor: pointer;
+  line-height: 1em;
+  text-align: center;
+}
+
+.star-rating label .star {
+  height: 1em;
+  width: 1em;
+  display: inline-block;
+}
+
+.star-rating>label {
+  -webkit-text-stroke: 2px black;
+}
+
+.star-rating input:checked~label>span.star,
+.star-rating>label:hover~input~label>span.star {
+  color: #fff;
+}
+
+.star-rating span.star,
+.star-rating:hover>input+label>span.star,
+.star-rating>input:checked+label>span.star,
+.star-rating>input~label:hover>span.star {
+  color: yellow;
+}
+
+.star-rating>input~label:hover>span.star {
+  color: orange;
+}
