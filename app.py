@@ -215,9 +215,9 @@ def connect4():
 
 @app.route("/leaderboards", methods=["GET"])
 def leaderboards():
-    games = Games.query.order_by(Games.title).all()
     try:
-        leaderboards = con.execute(text('SELECT "boardID", "gameID", users."userID", "date", "score", "username", "difficulty" FROM leaderboards join users on leaderboards."userID" = users."userID";')).all()
+        games = Games.query.order_by(Games.title).all()
+        leaderboards = con.execute(text('SELECT "boardID", "gameID", users."userID", "date", "score", "username", "difficulty" FROM leaderboards join users on leaderboards."userID" = users."userID" order by "difficulty" asc ,"score" desc;')).all()
         return render_template("leaderboards.html", games=games, leaderboards=leaderboards, loggedIn=(session.get("userid") is not None))
     except:
         con.rollback()
@@ -510,11 +510,11 @@ def ratings():
             print("true")
             x = Ratings.query.filter_by(gameID=request.form["gameid"], userID=session.get("userid")).first()
             x.review = request.form["review"]
-            x.rating = request.form["stars"]
+            x.rating = request.form["rating"]
             database.session.commit()
         else:
             print("false")
-            content = {"gameID":request.form["gameid"],"review":request.form["review"], "rating":request.form["stars"],"userID":session.get("userid")}
+            content = {"gameID":request.form["gameid"],"review":request.form["review"], "rating":request.form["rating"],"userID":session.get("userid")}
             message = Ratings(**content)
             database.session.add(message)
             database.session.commit()
@@ -608,13 +608,16 @@ def submitScore(gameID, score, difficulty=None):
             highscores = [2,6,7,8,10]
             lowscores = [1,4]
             if ((gameID in highscores and bestEntry.score < float(score)) or (gameID in lowscores and bestEntry.score > float(score))):
-                con.execute(text('update leaderboards set "score" = ' + score + ', "date" = ' + date.today() + ' where "gameID" = ' + gameID + " and userID = " + session.get("userid")))
-                flash("Score submitted")
+                update = Leaderboards.query.filter_by(gameID=gameID, userID=session.get("userid")).first()
+                update.score = score
+                update.date = date.today()
+                database.session.commit()
         else:
             content = {"gameID":gameID, "userID":session.get("userid"), "date":date.today(), "score":score, "difficulty":difficulty}
             score = Leaderboards(**content)
             database.session.add(score)
             database.session.commit()
+        flash("Score submitted")
 
 
 
