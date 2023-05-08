@@ -29,7 +29,7 @@ function startGame() {
     })
     $('#dealer-hand').children('.card').each(function () {
         classList = $(this).attr("class").split(/\s+/);
-        dealerTotal += parseInt(classList[3])
+        dealerTotal += parseInt(classList[3]);
         // console.log(classList);
     })
     // console.log("Player Total = " + playerTotal);
@@ -44,14 +44,15 @@ function hit() {
     $("#player-hand").append($("#deck").get(0).firstElementChild);
     if (checkBust(playerTotal, "#player-hand")) {
         // location.reload();
-        console.log("lost");
+        console.log("Player Lost");
+        endGame();
     }
+    document.getElementById("player-hand").scrollIntoView();
 }
 
 function checkBust(total, side) {
     $(side).children('.card').each(function () {
         classList = $(this).attr("class").split(/\s+/);
-        console.log(classList[-1]);
         if (classList[1] == "A") {
             if (side == "#player-hand") {
                 playerTotal2 = total - 10;
@@ -71,10 +72,7 @@ function checkBust(total, side) {
     })
     if (side == "#player-hand") {
         if (playerTotal2 > 21) {
-            $("#new-hand").css("display", "block");
             winner = "Dealer Wins"
-            var winnerText = $("<p></p>").text(winner);
-            $(".winner-box").append(winnerText);
             return true;
         }
         else{return false;}
@@ -82,7 +80,7 @@ function checkBust(total, side) {
     else {
         if (dealerTotal2 > 21) { return true;}
         else{return false;}
-    }
+     }
     }
 
 
@@ -116,7 +114,13 @@ function dealerTurn() {
         console.log("Tie");
         winner = "Tie";
     }
+    endGame();
+}
+
+function endGame() {
     $("#new-hand").css("display", "block");
+    $("#hit-btn").css("display", "none");
+    $("#stand-btn").css("display", "none");
     console.log("Player Total = "+playerTotal2);
     console.log("Dealer Total = "+dealerTotal2);
     var winnerText = $("<p></p>").text(winner);

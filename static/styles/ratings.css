@@ -30,15 +30,22 @@
 
 .message-box {
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
+    justify-content: space-evenly;
     border: 1px solid green;
-    padding: 15px;
+    padding: 30px;
+    background-color: whitesmoke;
 }
 
 .username {
     border-right: 1px solid green;
-    padding: 15px;
+    /* padding: 15px 0 15px 0; */
     align-self: center;
+}
+
+.message-box-item{
+    width: 33%;
+    padding: 15px 0 15px 0;
 }
 
 .message {
@@ -49,6 +56,7 @@
 .box-end {
     margin-left: auto;
 }
+
 
 .column {
     display: flex;
@@ -63,63 +71,26 @@
     flex-direction: row;
 }
 
+.stars-rating {
+    color: gold;
+    font-size: xx-large;
+}
+
 .stars {
-    color: yellow;
-}
-
-.hide-visually,
-.star-rating>input {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  position: absolute !important;
-  height: 1px; 
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-  clip: rect(1px, 1px, 1px, 1px); /*maybe deprecated but we need to support legacy browsers */
-  clip-path: inset(50%); /*modern browsers, clip-path works inwards from each corner*/
-  white-space: nowrap; /* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
-}
-
-.star-rating {
-  font-size: 40px;
-  display: inline-flex;
-  padding: 0;
-}
-
-.star-rating:focus-within {
-  outline: 3px solid #add8e6;
-}
-
-.star-rating label {
-  cursor: pointer;
-  line-height: 1em;
-  text-align: center;
-}
-
-.star-rating label .star {
-  height: 1em;
-  width: 1em;
   display: inline-block;
+  font-size: 30px;
+  color: #bbb;
+  user-select: none;
 }
 
-.star-rating>label {
-  -webkit-text-stroke: 2px black;
+.stars:hover {
+  cursor: pointer;
 }
 
-.star-rating input:checked~label>span.star,
-.star-rating>label:hover~input~label>span.star {
-  color: #fff;
+.star-filled {
+  color: #f0dd0a;
 }
 
-.star-rating span.star,
-.star-rating:hover>input+label>span.star,
-.star-rating>input:checked+label>span.star,
-.star-rating>input~label:hover>span.star {
-  color: yellow;
-}
-
-.star-rating>input~label:hover>span.star {
-  color: orange;
+.star-clicked {
+  color: #f0dd0a;
 }

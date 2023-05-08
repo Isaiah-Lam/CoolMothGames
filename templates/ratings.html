@@ -16,65 +16,39 @@
 <!-- ☆★ -->
         {% for rating in ratings %}
                 <div class="message-box">
-                    <div class="row">
-                        <div class="column">
-                            <p class="username">{{rating.username}}</p>
-                            <!-- <p>{{rating.rating}}</p> -->
+                    <!-- <div class="row"> -->
+                        <!-- <div class="column"> -->
+                            <p class="username message-box-item">{{rating.username}}</p>
                             {% if rating.rating == 1 %}
-                                <p class="stars">★☆☆☆☆</p>
+                                <p class="stars-rating message-box-item">★☆☆☆☆</p>
                             {% elif rating.rating == 2 %}
-                                <p class="stars">★★☆☆☆</p>
+                                <p class="stars-rating message-box-item">★★☆☆☆</p>
                             {% elif rating.rating == 3 %}
-                                <p class="stars">★★★☆☆</p>
+                                <p class="stars-rating message-box-item">★★★☆☆</p>
                             {% elif rating.rating == 4 %}
-                                <p class="stars">★★★★☆</p>
+                                <p class="stars-rating message-box-item">★★★★☆</p>
                             {% else %}
-                                <p class="stars">★★★★★</p>
+                                <p class="stars-rating message-box-item">★★★★★</p>
                             {%endif%}
-                        </div>
-                        <p>{{rating.review}}</p>
-                    </div>
+                        <!-- </div> -->
+                        <p class="message-box-item">{{rating.review}}</p>
+                    <!-- </div> -->
                 </div>
         {%endfor%}
 
         <form action="/ratings" method="post" class="submit-form" id="submit">
-            <!-- <input type="number" min="1" max="5" name="stars" placeholder="Rating 1-5"> -->
-            <fieldset class="star-rating">
-                <input checked name="stars" value="0" type="radio" id="rating0">
-                <label for="rating0">
-                  <span class="hide-visually">0 Stars</span>
-                </label>
+
+              <div class="stars" id="stars">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+              </div>
+              <input type="hidden" name="rating" id="rating" value="0">
+
               
-                <input name="stars" value="1" type="radio" id="rating1">
-                <label for="rating1">
-                  <span class="hide-visually">1 Star</span>
-                  <span aria-hidden="true" class="star">★</span>
-                </label>
               
-                <input name="stars" value="2" type="radio" id="rating2">
-                <label for="rating2">
-                  <span class="hide-visually">2 Stars</span>
-                  <span aria-hidden="true" class="star">★</span>
-                </label>
-              
-                <input name="stars" value="3" type="radio" id="rating3">
-                <label for="rating3">
-                  <span class="hide-visually">3 Stars</span>
-                  <span aria-hidden="true" class="star">★</span>
-                </label>
-              
-                <input name="stars" value="4" type="radio" id="rating4">
-                <label for="rating4">
-                  <span class="hide-visually">4 Stars</span>
-                  <span aria-hidden="true" class="star">★</span>
-                </label>
-              
-                <input name="stars" value="5" type="radio" id="rating5">
-                <label for="rating5">
-                  <span class="hide-visually">5 Stars</span>
-                  <span aria-hidden="true" class="star">★</span>
-                </label>
-              </fieldset>
 
             <textarea class="text-area"  placeholder="Review" name="review"></textarea>
             <input type="text" name="gameid" style="display: none" value="{{game.gameID}}">
@@ -83,5 +57,7 @@
 
     </div>
 </div>
+
+<script src="/static/rating.js" ></script>
 
 {% endblock %}
