@@ -5,6 +5,21 @@
     <link rel="stylesheet" href="/static/styles/games.css">
 </head>
 <body>
+    <div id="filterdiv">
+        <form action="/searchgames" method="post">
+            <input type="text" name="searchBy" placeholder="Search for a game">
+            <input type="submit" value="Search">
+        </form>
+        <form action="/filtergames" method="post">
+            <select name="filterBy" id="">
+                <option value="0" selected>All</option>
+                {%for tags in tags%}
+                <option value="{{tags.tagID}}">{{tags.genre}}</option>
+                {%endfor%}
+            </select>
+            <input type="submit" value="Filter">
+        </form>
+    </div>
     <div class="games-container">
     {% set img = namespace(url='') %}
     {% for game in games %}
@@ -12,6 +27,14 @@
             {% set img.url = 'game'+(game.gameID|string) %}
             <img src="/static/imgs/gamephotos/{{img.url}}.jpg" height="100%" width="100%" alt="">
             <a href="/loadgame?game={{game.gameID}}">{{game.title}}</a>
+            <div id="tags">
+                {% for tag in gametags if tag.gameID == game.gameID %}
+                    <form action="/genre" method="post">
+                        <input type="text" id="filterBy" name="filterBy" value="{{tag.tagID}}" style="display: none;">
+                        <input class="tag" type="submit" value="#{{tag.genre}}">
+                    </form>
+                {% endfor %}
+            </div>
         </div>
     {% endfor %}
     </div>
