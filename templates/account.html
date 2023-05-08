@@ -1,46 +1,55 @@
 {% extends 'base.html' %}
 {% block body %}
-<div>
-    <div>
-        <h1>Account ID</h1>
-        <p>{{userInfo.userID}}</p>
-    </div>
-    <div>
-        <h1>username</h1>
-        <p>{{userInfo.username}}</p>
-    </div>
-    <div>
-        <h1>Email</h1>
-        <p>{{userInfo.email}}</p>
-        
-    </div>
+<body>
+	<div id="accountpage">
+		<div id="accountinfo">
+			<div>
+				<h1>Account ID</h1>
+				<p>{{userInfo.userID}}</p>
+			</div>
+			<div>
+				<h1>username</h1>
+				<p>{{userInfo.username}}</p>
+			</div>
+			<div>
+				<h1>Email</h1>
+				<p>{{userInfo.email}}</p>
+				
+			</div>
 
-</div>
+		</div>
+		<div id="accountgames">
+
+
+		</div>
+	</div>
+	
+</body>
 
 <footer id="footercontainer">
 	<div class="footer">
-	<div class="row" id="socials">
-	<a href="#"><i class="fa fa-facebook"></i></a>
-	<a href="#"><i class="fa fa-instagram"></i></a>
-	<a href="#"><i class="fa fa-youtube"></i></a>
-	<a href="#"><i class="fa fa-twitter"></i></a>
+		<div class="row" id="socials">
+			<a href="#"><i class="fa fa-facebook"></i></a>
+			<a href="#"><i class="fa fa-instagram"></i></a>
+			<a href="#"><i class="fa fa-youtube"></i></a>
+			<a href="#"><i class="fa fa-twitter"></i></a>
+		</div>
+		
+		<div class="row">
+			<ul>
+				<li><a href="#">Contact us</a></li>
+				<li><a href="#">Our Services</a></li>
+				<li><a href="#">Privacy Policy</a></li>
+				<li><a href="#">Terms & Conditions</a></li>
+				<li><a href="#">Career</a></li>
+			</ul>
+		</div>
+		
+		<div class="row">
+		CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
+		</div>
 	</div>
-	
-	<div class="row">
-	<ul>
-	<li><a href="#">Contact us</a></li>
-	<li><a href="#">Our Services</a></li>
-	<li><a href="#">Privacy Policy</a></li>
-	<li><a href="#">Terms & Conditions</a></li>
-	<li><a href="#">Career</a></li>
-	</ul>
-	</div>
-	
-	<div class="row">
-	CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
-	</div>
-	</div>
-	</footer>
+</footer>
 
 
 

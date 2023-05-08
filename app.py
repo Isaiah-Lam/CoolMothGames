@@ -40,8 +40,13 @@ class Games(database.Model) :
 
 class Tags(database.Model) :
     tagID = database.Column(database.Integer, primary_key = True)
-    gameID = database.Column(database.Integer, database.ForeignKey("games.gameID"))
     genre = database.Column(database.String(50))
+
+class Gametags(database.Model) :
+    id = database.Column(database.Integer, primary_key = True)
+    gameID = database.Column(database.Integer, database.ForeignKey("games.gameID"))
+    tagID = database.Column(database.Integer, database.ForeignKey("tags.tagID"))
+    
 
 class Ratings(database.Model) :
     ratingID = database.Column(database.Integer, primary_key = True)
@@ -149,9 +154,44 @@ def logout():
     return redirect('/account')
  
 
-@app.route('/games')
+@app.route('/games', methods=["GET"])
 def gamesPage():
-    games = Games.query.order_by(Games.title).all()
+    try:
+        games = Games.query.order_by(Games.title).all()
+        gametags = con.execute(text('SELECT gametags."gameID", gametags."tagID", tags."genre" from gametags join tags on tags."tagID" = gametags."tagID"')).all()
+        tags = Tags.query.order_by(Tags.tagID).all()
+        return render_template("games.html", tags=tags, gametags=gametags, games=games, loggedIn=(session.get("userid") is not None))
+    
+    except:
+        con.rollback()
+        return redirect("/games")
+
+@app.route('/filtergames', methods=["POST"])
+def filterGamesPage():
+    if(request.form["filterBy"]=="0"):
+        return redirect("/games")
+    else:
+        games = con.execute(text(f'SELECT games."title", gameTags."gameID" FROM games join gametags on games."gameID" = gametags."gameID" where gametags."tagID" ='
+                                f'{request.form["filterBy"]} group by games."title", gametags."gameID"'))
+        gametags = con.execute(text('SELECT gametags."gameID", gametags."tagID", tags."genre" from gametags join tags on tags."tagID" = gametags."tagID"')).all()
+
+        return render_template("games.html", games=games, gametags=gametags, loggedIn=(session.get("userid") is not None))
+
+
+@app.route('/genre', methods=["POST"])
+def genreOfGames():
+    games = con.execute(text(f'SELECT games."title", gameTags."gameID" FROM games join gametags on games."gameID" = gametags."gameID" where gametags."tagID" = '
+                            f'{request.form["filterBy"]} group by games."title", gametags."gameID"'))
+    gametags = con.execute(text('SELECT gametags."gameID", gametags."tagID", tags."genre" from gametags join tags on tags."tagID" = gametags."tagID"')).all()
+
+    return render_template("games.html", games=games, gametags=gametags, loggedIn=(session.get("userid") is not None))
+
+
+@app.route('/searchgames', methods=["POST"])
+def searchGamesPage():
+    searchBy = request.form["searchBy"].title()
+    games = con.execute(text(f'SELECT "gameID", "title" FROM games WHERE "title" ILIKE \'%{searchBy}%\''))
+    print(games)
     return render_template("games.html", games=games, loggedIn=(session.get("userid") is not None))
 
 @app.route('/tictactoe', methods=["GET"])

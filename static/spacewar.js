@@ -300,7 +300,7 @@ window.addEventListener('load', function() {
             Object.keys(this.movementControls).forEach(key=> {
                 let lowKey = key.toLowerCase()
                 if (this.movementControls[lowKey].pressed) {
-                    if (lowKey == "w") {
+                    if (key == "w") {
                         this.player.moveup();
                     }
                     else if (lowKey == "a") {

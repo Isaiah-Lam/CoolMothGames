@@ -5,7 +5,7 @@
 }
 
 .game-div{
-    margin: 1%;
+    margin: 2vh auto;
     height: 45vh;
     text-align: center;
     padding: 15px;
@@ -13,4 +13,24 @@
     border: 2px solid black;
     width: 30%;
 
+}
+
+#filterdiv{
+    display: flex;
+    justify-content: space-between;
+}
+
+#tags{
+    display: flex;
+    justify-content: space-around;
+    background-color: black;
+}
+.tag{
+    cursor: pointer;
+    color: lightslategray;
+    background-color: transparent;
+    border: none;
+}
+.tag:hover{
+    color: white;
 }
