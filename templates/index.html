@@ -9,53 +9,102 @@
     
     <div id="home-flex">
         <div class="flex-div" id="featured-div">
-            <h2>Featured Games</h2>
-            <div class="feat-flex-item">
-                <p>Minesweeper</p>
-                <img src="" alt="">
+            <h2 style="width: 100%; text-align: center; margin-top: 1%;">Featured Games</h2><br><a style="text-decoration: none; width: 100%; text-align: center;" href="/games">[See More]</a>
+            <div class="flex-feat-item">
+                <h4>Highest Rating</h4>
+                <a class="game-link" href="/loadgame?game={{featuredGames[0]['gameid']}}">
+                <img class="game-img" src="/static/imgs/gamephotos/game{{featuredGames[0]['gameid']}}.jpg" height="90%" width="90%" alt="">
+                {{featuredGames[0]['title']}}</a>
             </div>
-            <div class="feat-flex-item">
-                <p>Flappy Moth</p>
-                <img src="" alt="">
+            <div class="flex-feat-item">
+                <h4>Most Ratings</h4>
+                <a class="game-link" href="/loadgame?game={{featuredGames[1]['gameid']}}">
+                <img class="game-img" src="/static/imgs/gamephotos/game{{featuredGames[1]['gameid']}}.jpg" height="90%" width="90%" alt="">
+                {{featuredGames[1]['title']}}</a>
             </div>
-            <div class="feat-flex-item">
-                <p>Connect 4</p>
-                <img src="" alt="">
+            <div class="flex-feat-item">
+                <h4>Developer's Pick</h4>
+                <a class="game-link" href="/loadgame?game=5">
+                <img class="game-img" src="/static/imgs/gamephotos/game5.jpg" height="90%" width="90%" alt="">
+                Connect 4</a>
             </div>
         </div>
-        <div class="flex-div" id="forums-div">
-
+        <div class="flex-div" id="news-div">
+            <h2 style="width: 100%; text-align: center; margin-top: 1%; height: fit-content;">Developer News</h2>
+            <div class="icon-div">
+                <ion-icon class="arrow-icon" name="arrow-back-circle-outline" onclick="newsLeft()"></ion-icon>
+            </div>
+            <div id="news-container">
+                <div id="news-slide-1" class="news-slide">
+                    <h1>User "gamer" sucks at memory.</h1>
+                </div>
+                <div id="news-slide-2" class="news-slide cur-slide">
+                    <h1>Chess coming soon!</h1>
+                </div>
+                <div id="news-slide-3" class="news-slide">
+                    <h1>Joel the footer is broken.</h1>
+                </div>
+            </div>
+            <div class="icon-div">
+                <ion-icon class="arrow-icon" name="arrow-forward-circle-outline"onclick="newsRight()"></ion-icon>
+            </div>
+            <div id="slide-bar-div">
+                <div id="slide-bar-1" class="slide-bar"></div>
+                <div id="slide-bar-2" class="slide-bar cur-bar"></div>
+                <div id="slide-bar-3" class="slide-bar"></div>
+            </div>
+            
         </div>
         <div class="flex-div" id="leaderboard-div">
+            <h2 style="width: 100%; text-align: center; margin-top: 1%;">Leaderboards</h2><br><a style="text-decoration: none; width: 100%; text-align: center;" href="/leaderboards">[See More]</a>
+            {% for score in featuredScores %}
+            <div class="featured-score">
+                <h4>{{score.heading}}</h4>
+                {% if score.difficulty %}
+                    <p>{{score.title}} ({{score.difficulty}})</p>
+                {% else %}
+                    <p>{{score.title}}</p>
+                {% endif %}
+                <p>{{score.user}}: {{score.score}}</p>
+            </div>
+            {% endfor %}
+            <div id="featured-player">
+                <h3>Top Player</h3>
+                <p>{{topPlayer[0].username}}</p>
+                <p>Highscores:</p>
+                <p>Games:</p>
+            </div>
+        </div>
+    </div>
+        
 
 
 <footer id="footercontainer">
 	<div class="footer">
-	<div class="row" id="socials">
-	<a href="#"><i class="fa fa-facebook"></i></a>
-	<a href="#"><i class="fa fa-instagram"></i></a>
-	<a href="#"><i class="fa fa-youtube"></i></a>
-	<a href="#"><i class="fa fa-twitter"></i></a>
-	</div>
-	
-	<div class="row">
-	<ul>
-	<li><a href="#">Contact us</a></li>
-	<li><a href="#">Our Services</a></li>
-	<li><a href="#">Privacy Policy</a></li>
-	<li><a href="#">Terms & Conditions</a></li>
-	<li><a href="#">Career</a></li>
-	</ul>
-	</div>
-	
-	<div class="row">
-	CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
-	</div>
-	</div>
-	</footer>
+	    <div class="row" id="socials">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-youtube"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
         </div>
-        
-    </div>
+	
+        <div class="row">
+            <ul>
+            <li><a href="#">Contact us</a></li>
+            <li><a href="#">Our Services</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Career</a></li>
+            </ul>
+        </div>
+	
+        <div class="row">
+            CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
+        </div>
+	</div>
+</footer>
+
+    <script src="static/index.js"></script>
 
 </body>
 

@@ -31,7 +31,7 @@ con = engine.connect()
 class Users(database.Model) :
     userID = database.Column(database.Integer, primary_key = True)
     username = database.Column(database.String(100), unique = True)
-    email = database.Column(database.String(100), unique = True)
+    # email = database.Column(database.String(100), unique = True)
     password = database.Column(database.String(100))
 
 class Games(database.Model) :
@@ -82,7 +82,58 @@ Session(app)
 
 @app.route('/')
 def index():
-    return render_template("index.html", loggedIn=(session.get("userid") is not None))
+
+    try:
+        featuredGames = []
+        highestRating = con.execute(text('select "gameID", avg("rating") as "average" from ratings group by "gameID" order by "average";')).first()
+        highestRatedGame = con.execute(text(f'select * from games where "gameID"={highestRating.gameID}')).first()
+        featuredGames.append({"gameid":highestRatedGame.gameID, "title":highestRatedGame.title})
+        mostRatings = con.execute(text('select "gameID", count("ratingID") as "countRatings" from ratings group by "gameID" order by "countRatings" desc')).first()
+        mostRatedGame = con.execute(text(f'select * from games where "gameID"={mostRatings.gameID}')).first()
+        featuredGames.append({"gameid":mostRatedGame.gameID, "title":mostRatedGame.title})
+
+        featuredScores = []
+        highscoregames = [2,6,7,8,10]
+        lowscoregames = [1,4]
+
+        # select max scores
+        # for each, select date where score = score and gameID = gameID
+
+        scores = con.execute(text('select "gameID", max("score"), min("score") from leaderboards group by "gameID"')).all()
+        maxDate = date(1,1,1)
+        minDate = date(9999,12,31)
+        oldScore = ''
+        newScore = ''
+        playerHighscoreCounts = {}
+        for score in scores:
+            if (score.gameID in highscoregames):
+                entry = con.execute(text(f'select "userID", "boardID", "date" from leaderboards where "score" = {score.max} and "gameID" = {score.gameID}')).first()
+            elif (score.gameID in lowscoregames):
+                entry = con.execute(text(f'select "userID", "boardID", "date" from leaderboards where "score" = {score.min} and "gameID" = {score.gameID}')).first()
+            if (entry.date > maxDate):
+                maxDate = entry.date
+                newScore = entry
+            if (entry.date < minDate):
+                minDate = entry.date
+                oldScore = entry
+            if (entry.userID in playerHighscoreCounts):
+                playerHighscoreCounts[entry.userID] += 1
+            else:
+                playerHighscoreCounts[entry.userID] = 1
+        
+        oldScore = con.execute(text(f'select "username", "score", "date", "title", "difficulty" from users join leaderboards on users."userID" = leaderboards."userID" join games on leaderboards."gameID" = games."gameID" where "boardID" = {oldScore.boardID}')).first()
+        newScore = con.execute(text(f'select "username", "score", "date", "title", "difficulty" from users join leaderboards on users."userID" = leaderboards."userID" join games on leaderboards."gameID" = games."gameID" where "boardID" = {newScore.boardID}')).first()
+
+        featuredScores.append({"heading":"Oldest Highscore","user":oldScore.username, "score":oldScore.score, "date":oldScore.date, "title":oldScore.title, "difficulty":oldScore.difficulty})
+        featuredScores.append({"heading":"Newest Highscore","user":newScore.username, "score":newScore.score, "date":newScore.date, "title":newScore.title, "difficulty":newScore.difficulty})
+        print(list(playerHighscoreCounts.keys())[list(playerHighscoreCounts.values()).index(max(playerHighscoreCounts.values()))])
+        topPlayer = con.execute(text(f'select * from leaderboards join users on leaderboards."userID" = users."userID" where users."userID" = {list(playerHighscoreCounts.keys())[list(playerHighscoreCounts.values()).index(max(playerHighscoreCounts.values()))]}')).all()
+
+    except:
+        con.rollback()
+        return redirect('/')
+
+    return render_template("index.html", featuredGames=featuredGames, featuredScores=featuredScores, topPlayer=topPlayer, loggedIn=(session.get("userid") is not None))
 
 
 @app.route('/account', methods=["GET"])
@@ -103,7 +154,9 @@ def loadlogin():
 
 @app.route('/signup', methods=["POST"])
 def signup():
-    content = {"username":request.form["username"], "email":request.form["email"], "password":werkzeug.security.generate_password_hash(request.form["password"], "sha256", 16)}
+    # content = {"username":request.form["username"], "email":request.form["email"], "password":werkzeug.security.generate_password_hash(request.form["password"], "sha256", 16)}
+    content = {"username":request.form["username"], "password":werkzeug.security.generate_password_hash(request.form["password"], "sha256", 16)}
+
     newUser = Users(**content)
     try:
         database.session.add(newUser)

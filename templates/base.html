@@ -3,10 +3,9 @@
 	<head>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap" rel="stylesheet"> 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="static/styles/style.css">
-<!--        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>-->
+        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<title>CoolMothGames</title>
 	</head>
@@ -18,11 +17,12 @@
 				<li class="nav-list-item"><a class="nav-link" href="/">Home</a></li>
 				<li class="nav-list-item"><a class="nav-link" href="/games">Games</a></li>
 				<li class="nav-list-item"><a class="nav-link" href="/leaderboards">Leaderboards</a></li>
+				<!-- add forum drop down here -->
 				{% if loggedIn %}
 					<li class="nav-list-item"><a class="nav-link" href="/account">My Account</a></li>
 					<li class="nav-list-item"><a class="nav-link" href="/logout">Log out</a></li>
 				{%else%}
-				<li class="nav-list-item"><a class="nav-link" href="/login">login</a></li>
+				<li class="nav-list-item"><a class="nav-link" href="/login">Login</a></li>
 				{% endif %}
 			</ul>
 		</div>

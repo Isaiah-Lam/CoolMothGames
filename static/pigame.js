@@ -38,6 +38,10 @@ $(document).ready(function () {
             $(keyElements[i]).removeClass('key-temp');
         });
 
+        keyElements[i].addEventListener('mouseenter', e => {
+            $(keyElements[i]).addClass('key-temp');
+        });
+
         keyElements[i].addEventListener('mouseleave', e => {
             if ($(keyElements[i]).hasClass('pressed-correct') || $(keyElements[i]).hasClass('pressed-wrong')) {
                 $(keyElements[i]).removeClass("pressed-correct");

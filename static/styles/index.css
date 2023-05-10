@@ -10,30 +10,129 @@
     border: 1px solid black;
     flex-direction: column;
     height: 75vh;
+    background-color: darkgray;
+    align-items: center;
 }
 
-.flex-item {
-    border: 1px solid;
+.flex-div {
+    background-color: dimgray;
+    margin: 0.5%;
+}
+
+.flex-item, .flex-div {
+    border: 4.6px solid;
     border-radius: 15px;
 }
 
 #featured-div {
-    border-color: red;
+    border-color: goldenrod;
     width: 60%;
-
-    height: 49vh;
+    height: 45vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #leaderboard-div {
-    border-color: blue;
-    width: 30%;
-    
+    border-color: goldenrod;
+    width: 35%;
     height: 74vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-#forums-div {
-    border-color: green;
+#news-div {
+    border-color: goldenrod;
     width: 60%;
-    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: start;
     height: 25vh;
+}
+
+.flex-feat-item {
+    margin: 1%;
+    height: 75%;
+    min-height: 75%;
+    text-align: center;
+    padding: 10px 10px 20px 10px;
+    background-color: brown;
+    border: 2px solid black;
+    width: 30%;
+}
+
+.featured-score {
+    width: 45%;
+    height: 40%;
+    margin: 1%;
+    background-color: brown;
+    border: 2px solid black;
+}
+
+#featured-player {
+    width: 90%;
+    height: 45%;
+    margin: 1%;
+    background-color: brown;
+    border: 2px solid black;
+}
+
+.game-link {
+    text-decoration: none;
+    color: white;
+}
+
+.game-img {
+    margin: 0.7%;
+}
+
+#news-container {
+    width: 75%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.news-slide {
+    display: none;
+    border: 3px solid black;
+    box-shadow: 10px 10px black;
+    background-color: brown;
+    padding: 3%;
+    text-align: center;
+    overflow: hidden;
+    width: 0;
+    height: 50%;
+}
+
+.arrow-icon {
+    font-size: xxx-large;
+}
+
+.icon-div {
+    width: 10%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#slide-bar-div {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 5%;
+}
+
+.slide-bar {
+    width: 25%;
+    background-color: rgba(255,255,255,0.5);
+    height: 75%;
+}
+
+.cur-bar {
+    background-color: rgba(165,42,42,0.85);
 }
