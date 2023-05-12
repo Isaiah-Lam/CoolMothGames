@@ -28,7 +28,6 @@ function computerTurn(){
     turn = 1;
     if(checkWin("O")){
         winStreak = 0;
-        $("#p2-score").text(p2Score);
         clearBoard();
     }
    
