@@ -38,3 +38,15 @@
     padding: 8px;
 }
 
+.leaderboard-div {
+    height: 75vh;
+}
+
+#footercontainer {
+    position: relative;
+    margin-top: 1px;
+}
+
+#body {
+    min-height: 63vh;
+}

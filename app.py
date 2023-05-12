@@ -236,7 +236,7 @@ def rps():
     if (session.get("userid") is None):
           highScore = "Login to see highscore"
     else:
-        highScore = Leaderboards.query.order_by(Leaderboards.score.desc()).first()
+        highScore = Leaderboards.query.filter_by(gameID = 2).order_by(Leaderboards.score.desc()).first()
         highScore = int(highScore.score)
     return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
 
