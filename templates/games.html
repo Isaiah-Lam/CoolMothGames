@@ -25,8 +25,8 @@
     {% for game in games %}
         <div class="game-div">
             {% set img.url = 'game'+(game.gameID|string) %}
-            <img src="/static/imgs/gamephotos/{{img.url}}.jpg" height="100%" width="100%" alt="">
-            <a href="/loadgame?game={{game.gameID}}">{{game.title}}</a>
+            <img src="/static/imgs/gamephotos/{{img.url}}.jpg" id="gameImage" alt="">
+            <a href="/loadgame?game={{game.gameID}}" id="gameLink">{{game.title}}</a>
             <div id="tags">
                 {% for tag in gametags if tag.gameID == game.gameID %}
                     <form action="/genre" method="post">
