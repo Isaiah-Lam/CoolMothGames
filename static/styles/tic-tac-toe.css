@@ -12,7 +12,7 @@
     justify-content: space-evenly;
     padding: 0 10%;
 }
-.row{
+.rows{
     display: flex;
     justify-content: center;
     width: 50%;

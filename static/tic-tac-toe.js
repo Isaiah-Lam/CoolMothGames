@@ -1,6 +1,7 @@
 var count = 0;
 var turn = 1;
 var winStreak = 0; 
+var tie;
 var pop = new Audio("static/sounds/pop.mp3");
 
 function clearBoard(){

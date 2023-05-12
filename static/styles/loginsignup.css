@@ -5,27 +5,38 @@
 } */
 
 #account-container {
+    height: 50vh;
     display: flex;
-    justify-content: center;
-    margin: 50px;
+    align-items: center;
+    justify-content: space-evenly
+    
+}
+#orDiv{
+    border: none;
+    margin: 0;
 }
 
 .account-div {
+    text-align: center;
     transition: width 1s;
-    overflow: hidden;
-    width: 33%;
+    padding: 2%;
+    border: 3px solid black;
+    border-radius: 25px;
+
+}
+.account-input{
+    justify-content: center;
 }
 
-/* #login-div {
-    width: 33%;
-    border: 1px solid black;
+
+#login-div {
+    text-align: center;
 }
 
-#signup-div {
-    width: 0;
-} */
+
 
 .account-input {
+    text-align: center;
     display: block;
-    margin: 2px;
+    margin: 10px auto;
 }
