@@ -4,7 +4,7 @@
 <head>
     <link rel="stylesheet" href="static/styles/leaderboards.css">
 </head>
-
+<div id="body">
 <div class="game_select">
     <button onclick='switchBoard("0")'>Reset Filter</button>
     {%for game in games%}
@@ -64,7 +64,7 @@
     {% endif %}
     {%endfor%}
 </div>
-
+</div>
 <footer id="footercontainer">
 	<div class="footer">
 	<div class="row" id="socials">

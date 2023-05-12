@@ -19,7 +19,9 @@
                     <!-- <div class="row"> -->
                         <!-- <div class="column"> -->
                             <p class="username message-box-item">{{rating.username}}</p>
-                            {% if rating.rating == 1 %}
+                            {% if rating.rating == 0 %}
+                                <p class="stars-rating message-box-item">☆☆☆☆☆</p>
+                            {% elif rating.rating == 1 %}
                                 <p class="stars-rating message-box-item">★☆☆☆☆</p>
                             {% elif rating.rating == 2 %}
                                 <p class="stars-rating message-box-item">★★☆☆☆</p>
