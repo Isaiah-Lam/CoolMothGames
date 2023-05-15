@@ -1,0 +1,21 @@
+#accountinfodiv{
+    background-color: red;
+}
+
+#accountinfo{
+    text-align: center;
+    width: fit-content;
+    background-color: aliceblue;
+    margin: 1rem;
+}
+
+#accountpage{
+    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#game-row{
+    display: flex;
+    justify-content: space-between;
+}

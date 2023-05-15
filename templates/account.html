@@ -1,24 +1,35 @@
 {% extends 'base.html' %}
 {% block body %}
+<head>
+	<link rel="stylesheet" href="/static/styles/account.css">
+</head>
 <body>
 	<div id="accountpage">
-		<div id="accountinfo">
-			<div>
-				<h1>Account ID</h1>
-				<p>{{userInfo.userID}}</p>
-			</div>
-			<div>
-				<h1>username</h1>
+		<div id="accountinfodiv">
+			<div id="accountinfo">
+				<h3>My username</h3>
 				<p>{{userInfo.username}}</p>
 			</div>
-			<div>
-				<h1>Email</h1>
+			<div id="accountinfo">
+				<h3>Email</h3>
 				<p>{{userInfo.email}}</p>
-				
 			</div>
 
 		</div>
-		<div id="accountgames">
+		<div id="accountgamesdiv">
+			<div>
+				<h2>Played Games</h2>
+			</div>
+			<div id="gameslist">
+				{% for games in usergames %}
+				<div id="game-row">
+					<a href="/loadgame?game={{games.gameID}}" id="gameLink">{{games.title}}</a>
+					<p>{{games.max}}</p>
+				</div>
+					
+				{% endfor %}
+			</div>
+				
 
 
 		</div>
