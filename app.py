@@ -84,11 +84,21 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
 # app.config['SESSION_FILE_THRESHOLD'] = 1
 Session(app)
 
+rollCounter = 0
+
+def rollbackCheck(route):
+    global rollCounter
+    if(rollCounter == 5):
+        rollCounter = 0
+        return redirect("/error")
+    else:
+        return redirect(route)
+
 
 
 @app.route('/')
 def index():
-
+    global rollCounter
     try:
         featuredGames = []
         highestRating = con.execute(text('select "gameID", avg("rating") as "average" from ratings group by "gameID" order by "average";')).first()
@@ -137,7 +147,9 @@ def index():
 
     except:
         con.rollback()
-        return redirect('/')
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/")
+
 
     return render_template("index.html", featuredGames=featuredGames, featuredScores=featuredScores, topPlayer=topPlayer, loggedIn=(session.get("userid") is not None))
 
@@ -233,7 +245,8 @@ def gamesPage():
     
     except:
         con.rollback()
-        return redirect("/games")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/games")
 
 @app.route('/filtergames', methods=["POST"])
 def filterGamesPage():
@@ -265,9 +278,14 @@ def searchGamesPage():
 
 @app.route('/tictactoe', methods=["GET"])
 def tictactoe():
-    user = Users.query.filter_by(userID=session.get("userid")).first()
-    wins = Leaderboards.query.filter_by(userID=session.get("userid"), gameID=3).first()
-    return render_template('tic-tac-toe.html', userInfo = user, wins=wins, loggedIn=(session.get("userid") is not None))
+    try:
+        user = Users.query.filter_by(userID=session.get("userid")).first()
+        wins = Leaderboards.query.filter_by(userID=session.get("userid"), gameID=3).first()
+        return render_template('tic-tac-toe.html', userInfo = user, wins=wins, loggedIn=(session.get("userid") is not None))
+    except:
+        con.rollback()
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/tictactoe")
 
 
 @app.route('/tictactoe', methods=["POST"])
@@ -301,13 +319,18 @@ def memoryScore():
 
 @app.route('/rps', methods=["GET"])
 def rps():
-    highScore = 0
-    if (session.get("userid") is None):
-          highScore = "Login to see highscore"
-    else:
-        highScore = Leaderboards.query.filter_by(gameID = 2).order_by(Leaderboards.score.desc()).first()
-        highScore = int(highScore.score)
-    return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
+    try:
+        highScore = 0
+        if (session.get("userid") is None):
+            highScore = "Login to see highscore"
+        else:
+            highScore = Leaderboards.query.filter_by(gameID = 2).order_by(Leaderboards.score.desc()).first()
+            highScore = int(highScore.score)
+        return render_template("rps.html", highScore=highScore, loggedIn=(session.get("userid") is not None))
+    except:
+        con.rollback()
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/rps")
 
 
 @app.route('/rps', methods=["POST"])
@@ -330,7 +353,8 @@ def leaderboards():
         return render_template("leaderboards.html", games=games, leaderboards=leaderboards, loggedIn=(session.get("userid") is not None))
     except:
         con.rollback()
-        return redirect("/leaderboards")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/leaderboards")
     
 
 @app.route('/minesweeper')
@@ -361,7 +385,8 @@ def memForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 1;'))
     except:
         con.rollback()
-        return redirect("/memory-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/rps-forums', methods=["GET"])
@@ -372,7 +397,8 @@ def rpsForums():
         replies = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 2;'))
     except:
         con.rollback()
-        return redirect("/rps-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/rps-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/tictactoe-forums', methods=["GET"])
@@ -383,7 +409,8 @@ def tttForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 3;'))
     except:
         con.rollback()
-        return redirect("/tictactoe-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/tictactoe-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/minesweeper-forums', methods=["GET"])
@@ -394,7 +421,8 @@ def mineForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 4;'))
     except:
         con.rollback()
-        return redirect("/minesweeper-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/minesweeper-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/connect4-forums', methods=["GET"])
@@ -405,7 +433,8 @@ def connect4Forums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 5;'))
     except:
         con.rollback()
-        return redirect("/connect4-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/connect4-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/starwar-forums', methods=["GET"])
@@ -416,7 +445,8 @@ def starwarForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 6;'))
     except:
         con.rollback()
-        return redirect("/starwar-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/starwar-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/flappymoth-forums', methods=["GET"])
@@ -427,7 +457,8 @@ def flappymothForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 7;'))
     except:
         con.rollback()
-        return redirect("/flappymoth-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/flappymoth-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/doodlemoth-forums', methods=["GET"])
@@ -438,7 +469,8 @@ def doodlemothForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 8;'))
     except:
         con.rollback()
-        return redirect("/doodlemoth-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/doodlemoth-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/drawpad-forums', methods=["GET"])
@@ -449,7 +481,8 @@ def drawpadForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 9;'))
     except:
         con.rollback()
-        return redirect("/drawpad-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/drawpad-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/pigame-forums', methods=["GET"])
@@ -460,7 +493,8 @@ def pigameForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 10;'))
     except:
         con.rollback()
-        return redirect("/pigame-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/pigame-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 @app.route('/blackjack-forums', methods=["GET"])
@@ -471,7 +505,8 @@ def blackjackForums():
         messages = con.execute(text('SELECT "messageID", "gameID", users."userID", "date", "message", "replyTo", users."username" FROM messages join users on messages."userID" = users."userID" where messages."gameID" = 11;'))
     except:
         con.rollback()
-        return redirect("/blackjack-forums")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/blackjack-forums")
     return render_template('forums.html', loggedIn=(session.get("userid") is not None), messages=messages, game=game, replies=replies)
 
 
@@ -491,7 +526,7 @@ def forumsSubmit():
         database.session.add(message)
         database.session.commit()
     routes = {"1":"/memory-forums", "2":"/rps-forums", "3":"/tictactoe-forums", "4":"/minesweeper-forums","5":"/connect4-forums",
-                  "6":"/starwar-forums", "7":"/flappymoth-forums", "8":"/doodlemoth-forums"}
+                  "6":"/starwar-forums", "7":"/flappymoth-forums", "8":"/doodlemoth-forums", "9":"/drawpad-forums", "10":"/pigame-forums", "11":"/blackjack-forums"}
     route = request.form["gameid"]
     return redirect(routes[route])
 
@@ -502,7 +537,8 @@ def memoryRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 1;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/rps-ratings', methods=['GET'])
@@ -512,7 +548,8 @@ def rpsRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 2;'))
     except:
         con.rollback()
-        return redirect("/rps-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/rps-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/tictactoe-ratings', methods=['GET'])
@@ -522,7 +559,8 @@ def tttRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 3;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/minesweeper-ratings', methods=['GET'])
@@ -532,7 +570,8 @@ def minesweeperRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 4;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/connect4-ratings', methods=['GET'])
@@ -542,7 +581,8 @@ def connect4Rating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 5;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/starwar-ratings', methods=['GET'])
@@ -552,7 +592,8 @@ def starwarRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 6;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/flappymoth-ratings', methods=['GET'])
@@ -562,7 +603,8 @@ def flappymothRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 7;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/doodlemoth-ratings', methods=['GET'])
@@ -572,7 +614,8 @@ def doodlemothRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 8;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/drawpad-ratings', methods=['GET'])
@@ -582,7 +625,8 @@ def drawpadRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 9;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/pigame-ratings', methods=['GET'])
@@ -592,7 +636,8 @@ def pigameRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 10;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 @app.route('/blackjack-ratings', methods=['GET'])
@@ -602,7 +647,8 @@ def blackjackRating():
         ratings = con.execute(text('SELECT "ratingID", "gameID", "review", "rating", users."username" FROM ratings join users on ratings."userID" = users."userID" where ratings."gameID" = 11;'))
     except:
         con.rollback()
-        return redirect("/memory-ratings")
+        rollCounter = rollCounter + 1
+        return rollbackCheck("/memory-ratings")
     return render_template('ratings.html', loggedIn=(session.get("userid") is not None), ratings=ratings, game=game)
 
 
@@ -613,24 +659,28 @@ def ratings():
     if (session.get("userid") is None):
         flash("You must be logged in to submit a review")
     else:
-        flash("Review Submitted")
-        rating = con.execute(text(f'SELECT "gameID", "userID" FROM ratings where ratings."gameID" = {request.form["gameid"]} and "userID" = {session.get("userid")};')).first()
-        if(rating):
-            print("true")
-            x = Ratings.query.filter_by(gameID=request.form["gameid"], userID=session.get("userid")).first()
-            x.review = request.form["review"]
-            x.rating = request.form["rating"]
-            database.session.commit()
-        else:
-            print("false")
-            content = {"gameID":request.form["gameid"],"review":request.form["review"], "rating":request.form["rating"],"userID":session.get("userid")}
-            message = Ratings(**content)
-            database.session.add(message)
-            database.session.commit()
-    routes = {"1":"/memory-ratings", "2":"/rps-ratings", "3":"/tictactoe-ratings", "4":"/minesweeper-ratings","5":"/connect4-ratings",
-                  "6":"/starwar-ratings", "7":"/flappymoth-ratings", "8":"/doodlemoth-ratings", "9":"/drawpad-ratings", "10":"/pigame-ratings", "11":"/blackjack-ratings"}
-    route = request.form["gameid"]
-    return redirect(routes[route])
+        try:
+            flash("Review Submitted")
+            rating = con.execute(text(f'SELECT "gameID", "userID" FROM ratings where ratings."gameID" = {request.form["gameid"]} and "userID" = {session.get("userid")};')).first()
+            if(rating):
+                print("true")
+                x = Ratings.query.filter_by(gameID=request.form["gameid"], userID=session.get("userid")).first()
+                x.review = request.form["review"]
+                x.rating = request.form["rating"]
+                database.session.commit()
+            else:
+                print("false")
+                content = {"gameID":request.form["gameid"],"review":request.form["review"], "rating":request.form["rating"],"userID":session.get("userid")}
+                message = Ratings(**content)
+                database.session.add(message)
+                database.session.commit()
+            routes = {"1":"/memory-ratings", "2":"/rps-ratings", "3":"/tictactoe-ratings", "4":"/minesweeper-ratings","5":"/connect4-ratings",
+                    "6":"/starwar-ratings", "7":"/flappymoth-ratings", "8":"/doodlemoth-ratings", "9":"/drawpad-ratings", "10":"/pigame-ratings", "11":"/blackjack-ratings"}
+            route = request.form["gameid"]
+            return redirect(routes[route])
+        except:
+            con.rollback()
+            return redirect("/error")
 
 @app.route('/blackjack', methods=["GET"])
 def blackjack():
@@ -700,6 +750,10 @@ def loadGame():
         return redirect("/blackjack")
     else:
         return redirect("/games")
+    
+@app.route('/error', methods=["GET"])
+def error():
+    return render_template("error.html")
 
 
 # function for submitting score to leaderboard
