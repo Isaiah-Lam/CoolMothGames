@@ -67,13 +67,14 @@
     }
 
 #socials{
+    padding: 8px 0;
     display: flex;
     justify-content: space-evenly;
     width: 25%;
     }
     
 .footer .row a:hover{
-    color:#fff;
+    color:goldenrod;
     }
     
 .footer .row ul{

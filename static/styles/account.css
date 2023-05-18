@@ -1,21 +1,76 @@
 #accountinfodiv{
-    background-color: red;
+    width: 30%;
+    padding: 20px 10px;
+    text-align: center;
+    background-color: brown;
+
 }
 
-#accountinfo{
+#username{
+    margin: 15px 0;
+}
+
+.heading{
     text-align: center;
-    width: fit-content;
-    background-color: aliceblue;
-    margin: 1rem;
 }
 
 #accountpage{
+    font-size: 1.5rem;
+    height: 60vh;
     align-items: center;
     display: flex;
     justify-content: space-evenly;
 }
 
-#game-row{
+#accountgamesdiv{
+    padding: 10px 15px;
+    width: 30%;
+}
+
+.game-row{
     display: flex;
     justify-content: space-between;
+
+}
+.end{
+    justify-content: flex-end;
+}
+.editbutton{
+    margin-top: 5%;
+    cursor: pointer;
+    padding: 1%;
+    background-color: black;
+    border: 1px solid white;
+    border-radius: 5px;
+    color: white;
+}
+
+.editbutton:hover{
+    color: goldenrod;
+    border: 1px solid goldenrod
+}
+
+.center{
+    text-align: center;
+}
+
+#usernameform{
+    display: none;
+}
+
+.titles{
+    border: 1px solid black;
+}
+
+.gamelink{
+    color: black;
+    
+}
+
+.gamelink:hover{
+    color: goldenrod;
+}
+
+#accountgamesdiv{
+    background-color: brown;
 }
