@@ -4,27 +4,37 @@
 	<link rel="stylesheet" href="/static/styles/account.css">
 </head>
 <body>
+	<div class="heading">
+		<h1>My Account</h1>
+	</div>
 	<div id="accountpage">
 		<div id="accountinfodiv">
-			<div id="accountinfo">
-				<h3>My username</h3>
+			<div id="username">
+				<h3>Username</h3>
 				<p>{{userInfo.username}}</p>
-			</div>
-			<div id="accountinfo">
-				<h3>Email</h3>
-				<p>{{userInfo.email}}</p>
+				<button class="editbutton" type="submit" onclick="openUsernameForm()" id="editbutton"> edit</button>
+				<form action="/usernamechange" id="usernameform" method="POST">
+					<input type="text" name="newname" placeholder="Enter your new username">
+					<input type="submit" class="editbutton" value="accept">
+					<button class="editbutton" type="submit" onclick="closeUsernameForm()" id="editbutton">cancel</button>
+				</form>
+
 			</div>
 
 		</div>
 		<div id="accountgamesdiv">
-			<div>
-				<h2>Played Games</h2>
+			<div class="heading">
+				<h3>Played Games</h3>
 			</div>
 			<div id="gameslist">
+				<div class="game-row titles">
+					<p>Game</p>
+					<p>Your highscore</p>
+				</div>
 				{% for games in usergames %}
-				<div id="game-row">
-					<a href="/loadgame?game={{games.gameID}}" id="gameLink">{{games.title}}</a>
-					<p>{{games.max}}</p>
+				<div class="game-row">
+					<a href="/loadgame?game={{games.gameID}}" class="gameLink">{{games.title}}</a>
+					<p class="end">{{games.max}}</p>
 				</div>
 					
 				{% endfor %}
@@ -62,7 +72,7 @@
 	</div>
 </footer>
 
-
+<script src="/static/account.js"></script>
 
 
 

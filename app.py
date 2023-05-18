@@ -147,9 +147,25 @@ def accountPage():
     if (session.get("userid") is None):
         return render_template("loginsignup.html", loggedIn=False)
     else:
-        user = con.execute(text(f'SELECT "username", "email" from users where "userID" = {session.get("userid")}')).first()
-        usergames = con.execute(text(f'SELECT games."gameID", games."title", max(leaderboards."score") FROM games JOIN leaderboards ON games."gameID" = leaderboards."gameID" WHERE leaderboards."userID" = {session.get("userid")} GROUP BY games."gameID", games."title"'))
-        return render_template("account.html", userInfo=user, usergames=usergames, loggedIn=(session.get("userid") is not None))
+        try:
+            user = con.execute(text(f'SELECT "username" from users where "userID" = {session.get("userid")}')).first()
+            usergames = con.execute(text(f'SELECT games."gameID", games."title", max(leaderboards."score") FROM games JOIN leaderboards ON games."gameID" = leaderboards."gameID" WHERE leaderboards."userID" = {session.get("userid")} GROUP BY games."gameID", games."title"'))
+            return render_template("account.html", userInfo=user, usergames=usergames, loggedIn=(session.get("userid") is not None))
+        except:
+            con.rollback()
+            return redirect("/account")
+        
+        
+@app.route('/usernamechange', methods=["POST"])
+def changeUsername():
+    if(request.form['newname']):
+        oldname = Users.query.filter_by(userID = session.get("userid")).first()
+        oldname.username = request.form["newname"]
+        database.session.commit()
+        return redirect("/account")
+    else:
+        return redirect('/account')
+    
 
 
 @app.route('/login', methods=["GET"])
