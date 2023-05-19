@@ -31,9 +31,9 @@ class Player {
     }
     update() {
         this.hity += this.game.gravity;
-        if (this.hity < this.game.height/3*2) {
-            let dif = this.game.height/3*2-this.hity;
-            this.hity = this.game.height/3*2;
+        if (this.hity < this.game.height/2) {
+            let dif = this.game.height/2-this.hity;
+            this.hity = this.game.height/2;
             this.game.platforms.forEach(function(item, index, object) {
                 // plt.draw(ctx);
                 item.lowerLeft.y += dif;
@@ -50,9 +50,9 @@ class Player {
                 // this.game.platforms.push(new Platform(this.game, "basic"))
                 $("#score").text(this.game.score);
             }
-            else if (this.scoreCounter == 3) {
-                let typeNum = Math.floor(Math.random()*3);
-                let types = ["basic", "broken", "bouncy"];
+            if (this.game.platforms[this.game.platforms.length-1].upperRight.y >= this.game.height/4) {
+                let typeNum = Math.floor(Math.random()*6);
+                let types = ["basic", "basic", "basic", "broken", "broken", "bouncy"];
                 this.game.platforms.push(new Platform(this.game, types[typeNum]));
             }
         }
@@ -70,7 +70,7 @@ class Platform {
         this.bounceHeight;
         this.color;
         if (this.type == "basic") {
-            this.bounceHeight = -15;
+            this.bounceHeight = -20;
             this.color = "green";
         }
         else if (this.type == "broken") {
@@ -121,6 +121,7 @@ class Game {
         })
         canvas.addEventListener("mousedown", e => {
             if (!this.started) {
+                $("#start-btn").css("display", "none");
                 this.started = true;
                 this.gravity = -50;
                 this.active = true;
@@ -140,8 +141,12 @@ class Game {
             let [collision, platform] = this.checkPlatformCollision();
             if (collision) {
                 this.gravity = platform.bounceHeight;
+                console.log("\njump\n");
                 platform.jumpedOn = true;
                 if (platform.type == "broken") {
+                    // console.log(platform);
+                    // console.log(this.platforms.indexOf(platform));
+                    // console.log('\n\n')
                     this.platforms.splice(this.platforms.indexOf(platform), 1);
                 }
             }
@@ -161,10 +166,11 @@ class Game {
         let collision = false;
         let platform;
         this.platforms.every(plt => {
+            console.log(plt);
             console.log(plt.upperRight.y - (this.player.hity+this.player.hitr));
+            console.log('\n\n');
             // dists.push(plt.upperRight.y - this.player.hity-this.player.hitr);
-            if (this.player.hitx+this.player.hitr >= plt.lowerLeft.x && this.player.hitx-this.player.hitr <= plt.upperRight.x && plt.upperRight.y - (this.player.hity+this.player.hitr) <= 5 && plt.upperRight.y - (this.player.hity+this.player.hitr) >= -5) {
-                console.log(plt, plt.upperRight.y - (this.player.hity+this.player.hitr));
+            if (this.player.hitx+this.player.hitr >= plt.lowerLeft.x && this.player.hitx-this.player.hitr <= plt.upperRight.x && plt.upperRight.y - (this.player.hity+this.player.hitr) <= 7.5 && plt.upperRight.y - (this.player.hity+this.player.hitr) >= -7.5) {
                 collision = true;
                 platform = plt;
                 return false;

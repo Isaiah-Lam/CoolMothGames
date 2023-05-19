@@ -13,19 +13,19 @@
             <div class="flex-feat-item">
                 <h4>Highest Rating</h4>
                 <a class="game-link" href="/loadgame?game={{featuredGames[0]['gameid']}}">
-                <img class="game-img" src="/static/imgs/gamephotos/game{{featuredGames[0]['gameid']}}.jpg" height="90%" width="90%" alt="">
+                <img class="game-img" src="/static/imgs/gamephotos/game{{featuredGames[0]['gameid']}}.jpg" height="90%" width="90%" alt=""><br>
                 {{featuredGames[0]['title']}}</a>
             </div>
             <div class="flex-feat-item">
                 <h4>Most Ratings</h4>
                 <a class="game-link" href="/loadgame?game={{featuredGames[1]['gameid']}}">
-                <img class="game-img" src="/static/imgs/gamephotos/game{{featuredGames[1]['gameid']}}.jpg" height="90%" width="90%" alt="">
+                <img class="game-img" src="/static/imgs/gamephotos/game{{featuredGames[1]['gameid']}}.jpg" height="90%" width="90%" alt=""><br>
                 {{featuredGames[1]['title']}}</a>
             </div>
             <div class="flex-feat-item">
                 <h4>Developer's Pick</h4>
                 <a class="game-link" href="/loadgame?game=5">
-                <img class="game-img" src="/static/imgs/gamephotos/game5.jpg" height="90%" width="90%" alt="">
+                <img class="game-img" src="/static/imgs/gamephotos/game5.jpg" height="90%" width="90%" alt=""><br>
                 Connect 4</a>
             </div>
         </div>
@@ -36,13 +36,13 @@
             </div>
             <div id="news-container">
                 <div id="news-slide-1" class="news-slide">
-                    <h1>User "gamer" sucks at memory.</h1>
+                    <h1>Our mascot's name is Jerry.</h1>
                 </div>
                 <div id="news-slide-2" class="news-slide cur-slide">
-                    <h1>Chess coming soon!</h1>
+                    <h1>There are no bugs, only features.</h1>
                 </div>
                 <div id="news-slide-3" class="news-slide">
-                    <h1>Joel the footer is broken.</h1>
+                    <h1>Chess coming soon!</h1>
                 </div>
             </div>
             <div class="icon-div">
@@ -59,20 +59,35 @@
             <h2 style="width: 100%; text-align: center; margin-top: 1%;">Leaderboards</h2><br><a style="text-decoration: none; width: 100%; text-align: center;" href="/leaderboards">[See More]</a>
             {% for score in featuredScores %}
             <div class="featured-score">
-                <h4>{{score.heading}}</h4>
-                {% if score.difficulty %}
-                    <p>{{score.title}} ({{score.difficulty}})</p>
-                {% else %}
-                    <p>{{score.title}}</p>
-                {% endif %}
-                <p>{{score.user}}: {{score.score}}</p>
+                <h3 class="score-heading">{{score.heading}}</h3>
+                <div class="score-info">
+                    {% if score.difficulty %}
+                        <h2 style="font-size: 1vw;">{{score.title}} ({{score.difficulty}})</h2>
+                    {% else %}
+                        <h2 style="font-size: 1vw;">{{score.title}}</h2>
+                    {% endif %}
+                    <h1 style="font-size: 1.3vw;">{{score.user}}</h1>
+                    <h2 style="font-size: 1vw;">Score: {{score.score}}</h2>
+                </div>
+                <h4 style="margin-bottom: 1.3vh;">Want to beat this score?</h4><a style="color: white;" href="/loadgame?game={{score.gameID}}">Play {{score.title}} here.</a>
             </div>
             {% endfor %}
-            <div id="featured-player">
-                <h3>Top Player</h3>
-                <p>{{topPlayer[0].username}}</p>
-                <p>Highscores:</p>
-                <p>Games:</p>
+            <div id="top-players" class="featured-score">
+                <h3 class="score-heading">Top Players</h3>
+                <table id="player-rank-table">
+                    <tr class="rank-row">
+                        <th style="width: 15%; text-align: center;" class="rank-data">Rank</th>
+                        <th style="width: 50%; text-align: center;" class="rank-data">Player</th>
+                        <th style="width: 35%; text-align: center;" class="rank-data">Highscores</th>
+                    </tr>
+                    {% for player in playerRankings %}
+                        <tr class="rank-row">
+                            <td class="rank-data">{{player.rank}}</td>
+                            <td class="rank-data">{{player.username}}</td>
+                            <td class="rank-data">{{player.scores}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
         </div>
     </div>

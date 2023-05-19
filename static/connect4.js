@@ -1,5 +1,8 @@
+var placed = 0;
+
 function startGame() {
-    $("#memory-btn").text(switchColors("Yellow")+"'s Turn");
+    $("#start-btn").text(switchColors("Yellow")+"'s Turn");
+    $("#start-btn").css("pointer-events", "none");
     $(".connect-col.available").each(function () {
         $(this).click(function () {
             $(".connect-col").each(function () {
@@ -8,7 +11,7 @@ function startGame() {
             let col = parseInt(this.classList[1].substring(3));
             for (let row=5; row>-1; row--) {
                 if (!$("#row"+row+"col"+col).hasClass("taken")) {
-                    let currentColor = $("#memory-btn").text().substring(0,$("#memory-btn").text().indexOf("'"));
+                    let currentColor = $("#start-btn").text().substring(0,$("#start-btn").text().indexOf("'"));
                     placePiece(row, 0, col, currentColor.toLowerCase());
                     break;
                 }
@@ -18,6 +21,7 @@ function startGame() {
 }
 
 function placePiece(row, currentRow, col, color) {
+    placed++;
     $("#row"+currentRow+"col"+col).addClass(color+"Full");
     setTimeout(() => {
         if (currentRow != row) {
@@ -33,11 +37,15 @@ function placePiece(row, currentRow, col, color) {
             });
             $("#row"+currentRow+"col"+col).removeClass("available");
             $("#row"+currentRow+"col"+col).addClass("taken");
-            $("#memory-btn").text(switchColors(color) + "'s Turn");
+            $("#start-btn").text(switchColors(color) + "'s Turn");
             if ($("."+color.toLowerCase()+"Full").length >= 4) {
-                console.log(color + " " + row + " " + col);
                 if (checkWin(color.toLowerCase()+"Full", row, col)) {
-                    console.log(color + 'wins');
+                    $("#start-btn").text(color.toUpperCase() + ' WINS!');
+                    $("#connect-board").css("pointer-events", "none");
+                }
+                else if (placed == 42) {
+                    $("#start-btn").text("Tie");
+                    $("#connect-board").css("pointer-events", "none");
                 }
             }
         }
@@ -154,4 +162,8 @@ function checkLeftDiagonal(colorFull, row, col) {
         startCol++;
     }
     return false;
+}
+
+function startOver() {
+    location.reload()
 }

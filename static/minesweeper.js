@@ -84,7 +84,10 @@ function firstClick(id) {
     let mines = sessionStorage.getItem("mines");
     let spotsLeft = rows*cols;
     var startCells = [cell];
-    let startCoords = {"x":parseInt(id.substring(7)), "y":parseInt(id.substring(3,5))};
+    console.log(id);
+    let idx = parseInt(id.substring(5).replace ( /[^\d.]/g, '' ));
+    let idy = parseInt(id.substring(0,5).replace ( /[^\d.]/g, '' ));
+    let startCoords = {"x":idx, "y":idy};
     console.log(startCoords);
     var coords = [{"x":0,"y":1},{"x":1,"y":1},{"x":1,"y":0},{"x":1,"y":-1},{"x":0,"y":-1},{"x":-1,"y":-1},{"x":-1,"y":0},{"x":-1,"y":1}];
     for (let i=0; i<8; i++) {
@@ -138,13 +141,15 @@ function firstClick(id) {
 function click(cell, userClick) {
     let rows = sessionStorage.getItem("height");
     let cols = sessionStorage.getItem("width");
-    if ($(cell).attr("background-color") != "darkorange") {
+    if (!$(cell).hasClass("flagged")) {
         $(cell).css("pointer-events", "none");
         if ($(cell).hasClass('mine')) {
             endGame(false);
         }
         else {
-            let startCoords = {"x":parseInt(cell.id.substring(7)), "y":parseInt(cell.id.substring(3,5))};
+            let idx = parseInt(cell.id.substring(5).replace ( /[^\d.]/g, '' ));
+            let idy = parseInt(cell.id.substring(0,5).replace ( /[^\d.]/g, '' ));
+            let startCoords = {"x":idx, "y":idy};
             $(cell).css("background-color", "gray");
             $(cell.firstChild).removeClass("hidden");
             if ($(cell.firstChild).text() == "0") {

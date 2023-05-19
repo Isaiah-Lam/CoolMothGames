@@ -34,7 +34,7 @@
 
 #footercontainer{
     position: relative;
-    margin-top: 5vh;
+    /* margin-top: 5vh; */
     bottom: 0;
     width: 100%;
     background-image: url("/static/imgs/Footerbackground.jpg");

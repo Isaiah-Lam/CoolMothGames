@@ -6,7 +6,8 @@
 </head>
 
 <h1>Connect4</h1>
-<button id="memory-btn" onclick="startGame(this)">Start Game</button>
+<button id="start-btn" onclick="startGame(this)">Start Game</button>
+<button id="reset-btn" onclick="startOver()">Reset Board</button>
 <div id="table-div">
     <table id="connect-board">
         {% for i in range (6) %}

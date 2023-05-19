@@ -69,6 +69,14 @@
     margin: 1%;
     background-color: brown;
     border: 2px solid black;
+    text-align: center;
+}
+
+.score-info {
+    border: 2px solid black;
+    box-shadow: 7px 7px black;
+    width: 75%;
+    margin: 10% auto;
 }
 
 #featured-player {
@@ -101,7 +109,7 @@
     border: 3px solid black;
     box-shadow: 10px 10px black;
     background-color: brown;
-    padding: 3%;
+    padding: 2%;
     text-align: center;
     overflow: hidden;
     width: 0;
@@ -135,4 +143,40 @@
 
 .cur-bar {
     background-color: rgba(165,42,42,0.85);
+}
+
+#top-players {
+    width: 92%;
+    overflow-y: auto;
+}
+
+#top-players::-webkit-scrollbar {
+    width: 10px;
+}
+
+#top-players::-webkit-scrollbar-track {
+    background-color: transparent;
+    
+}
+
+#top-players::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.score-heading {
+    text-align: center;
+    padding: 10px;
+}
+
+#player-rank-table {
+    border-collapse: collapse;
+    text-align: right;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.rank-data {
+    padding: 1.5%;
+    border: 1px solid black;
 }
