@@ -10,8 +10,14 @@
 
 
     <body id="body">
+        <button id="start-btn" onclick="$('#canvas').css('display', 'block');$('#start-btn').text('Click Game to Start');">Play Game</button>
         <span>Score:</span>
         <span id="score">0</span>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <h4>{{ messages[0] }}</h4>
+            {% endif %}
+        {% endwith %}
         <canvas id="canvas"></canvas>
         
         <div id="img-div">

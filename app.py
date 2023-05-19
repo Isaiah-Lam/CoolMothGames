@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from datetime import date, timedelta
 import werkzeug.security
+import operator
 
 # Examples on how to get and commit
 
@@ -112,10 +113,7 @@ def index():
         highscoregames = [2,6,7,8,10]
         lowscoregames = [1,4]
 
-        # select max scores
-        # for each, select date where score = score and gameID = gameID
-
-        scores = con.execute(text('select "gameID", max("score"), min("score") from leaderboards group by "gameID"')).all()
+        scores = con.execute(text('select "gameID", "difficulty", max("score"), min("score") from leaderboards group by "gameID", "difficulty"')).all()
         maxDate = date(1,1,1)
         minDate = date(9999,12,31)
         oldScore = ''
@@ -123,9 +121,11 @@ def index():
         playerHighscoreCounts = {}
         for score in scores:
             if (score.gameID in highscoregames):
-                entry = con.execute(text(f'select "userID", "boardID", "date" from leaderboards where "score" = {score.max} and "gameID" = {score.gameID}')).first()
+                # entry = con.execute(text(f'select "userID", "boardID", "date", "difficulty" from leaderboards where "score" = {score.max} and "gameID" = {score.gameID} and "difficulty" = {score.difficulty}')).first()
+                entry = Leaderboards.query.filter_by(score=score.max, gameID=score.gameID, difficulty=score.difficulty).first()
             elif (score.gameID in lowscoregames):
-                entry = con.execute(text(f'select "userID", "boardID", "date" from leaderboards where "score" = {score.min} and "gameID" = {score.gameID}')).first()
+                # entry = con.execute(text(f'select "userID", "boardID", "date", "difficulty" from leaderboards where "score" = {score.min} and "gameID" = {score.gameID} and "difficulty" = {score.difficulty}')).first()
+                entry = Leaderboards.query.filter_by(score=score.min, gameID=score.gameID, difficulty=score.difficulty).first()
             if (entry.date > maxDate):
                 maxDate = entry.date
                 newScore = entry
@@ -133,25 +133,24 @@ def index():
                 minDate = entry.date
                 oldScore = entry
             if (entry.userID in playerHighscoreCounts):
-                playerHighscoreCounts[entry.userID] += 1
+                playerHighscoreCounts[entry.userID]["scores"] += 1
             else:
-                playerHighscoreCounts[entry.userID] = 1
+                playerHighscoreCounts[entry.userID] = {"username":con.execute(text(f'select username from users where "userID" = {entry.userID}')).first().username, "scores":1}
         
-        oldScore = con.execute(text(f'select "username", "score", "date", "title", "difficulty" from users join leaderboards on users."userID" = leaderboards."userID" join games on leaderboards."gameID" = games."gameID" where "boardID" = {oldScore.boardID}')).first()
-        newScore = con.execute(text(f'select "username", "score", "date", "title", "difficulty" from users join leaderboards on users."userID" = leaderboards."userID" join games on leaderboards."gameID" = games."gameID" where "boardID" = {newScore.boardID}')).first()
+        playerRankings = sortScoreCounts(playerHighscoreCounts)
+        oldScore = con.execute(text(f'select leaderboards."gameID", "username", "score", "date", "title", "difficulty" from users join leaderboards on users."userID" = leaderboards."userID" join games on leaderboards."gameID" = games."gameID" where "boardID" = {oldScore.boardID}')).first()
+        newScore = con.execute(text(f'select leaderboards."gameID", "username", "score", "date", "title", "difficulty" from users join leaderboards on users."userID" = leaderboards."userID" join games on leaderboards."gameID" = games."gameID" where "boardID" = {newScore.boardID}')).first()
 
-        featuredScores.append({"heading":"Oldest Highscore","user":oldScore.username, "score":oldScore.score, "date":oldScore.date, "title":oldScore.title, "difficulty":oldScore.difficulty})
-        featuredScores.append({"heading":"Newest Highscore","user":newScore.username, "score":newScore.score, "date":newScore.date, "title":newScore.title, "difficulty":newScore.difficulty})
-        print(list(playerHighscoreCounts.keys())[list(playerHighscoreCounts.values()).index(max(playerHighscoreCounts.values()))])
-        topPlayer = con.execute(text(f'select * from leaderboards join users on leaderboards."userID" = users."userID" where users."userID" = {list(playerHighscoreCounts.keys())[list(playerHighscoreCounts.values()).index(max(playerHighscoreCounts.values()))]}')).all()
-
+        featuredScores.append({"heading":"Oldest Highscore","user":oldScore.username, "score":oldScore.score, "date":oldScore.date, "title":oldScore.title, "gameID":oldScore.gameID, "difficulty":oldScore.difficulty})
+        featuredScores.append({"heading":"Newest Highscore","user":newScore.username, "score":newScore.score, "date":newScore.date, "title":newScore.title, "gameID":newScore.gameID, "difficulty":newScore.difficulty})
+    
     except:
         con.rollback()
         rollCounter = rollCounter + 1
         return rollbackCheck("/")
 
 
-    return render_template("index.html", featuredGames=featuredGames, featuredScores=featuredScores, topPlayer=topPlayer, loggedIn=(session.get("userid") is not None))
+    return render_template("index.html", featuredGames=featuredGames, featuredScores=featuredScores, playerRankings=playerRankings, loggedIn=(session.get("userid") is not None))
 
 
 @app.route('/account', methods=["GET"])
@@ -160,7 +159,8 @@ def accountPage():
         return render_template("loginsignup.html", loggedIn=False)
     else:
         try:
-            user = con.execute(text(f'SELECT "username" from users where "userID" = {session.get("userid")}')).first()
+            user = Users.query.filter_by(userID=session.get("userid")).first()
+#             user = con.execute(text(f'SELECT "username" from users where "userID" = {session.get("userid")}')).first()
             usergames = con.execute(text(f'SELECT games."gameID", games."title", max(leaderboards."score") FROM games JOIN leaderboards ON games."gameID" = leaderboards."gameID" WHERE leaderboards."userID" = {session.get("userid")} GROUP BY games."gameID", games."title"'))
             return render_template("account.html", userInfo=user, usergames=usergames, loggedIn=(session.get("userid") is not None))
         except:
@@ -199,7 +199,7 @@ def signup():
         session["username"] = newUser.username
         return redirect('/')
     except:
-        flash("Username or email already in use")
+        flash("Username already in use")
         return redirect('/account')
     
 
@@ -273,7 +273,6 @@ def genreOfGames():
 def searchGamesPage():
     searchBy = request.form["searchBy"].title()
     games = con.execute(text(f'SELECT "gameID", "title" FROM games WHERE "title" ILIKE \'%{searchBy}%\''))
-    print(games)
     return render_template("games.html", games=games, loggedIn=(session.get("userid") is not None))
 
 @app.route('/tictactoe', methods=["GET"])
@@ -364,7 +363,13 @@ def minsweeper():
 
 @app.route("/minesweeper", methods=["POST"])
 def minesweeperScore() :
-    submitScore(4, request.form["score"], request.form["difficulty"])
+    score = request.form["score"]
+    dif = request.form["difficulty"]
+    try:
+        submitScore(4, score, dif)
+    except:
+        con.rollback()
+        submitScore(4, score, dif)
     return redirect("/minesweeper")
 
 
@@ -725,7 +730,6 @@ def doodleMothScore():
 @app.route('/loadgame', methods=["GET"])
 def loadGame():
     id = request.args.get('game')
-    print(id)
     if(id == "1"):
         return redirect("/memory")    
     elif(id == "2"):
@@ -783,7 +787,24 @@ def submitScore(gameID, score, difficulty=None):
         flash("Score submitted")
 
 
+def sortScoreCounts(scoreCounts) :
+    players = []
+    for entry in scoreCounts.values():
+        print(entry)
+        players.append({'rank':0, 'username':entry['username'], 'scores':entry['scores']})
 
+    sortedPlayers = sorted(players, key=operator.itemgetter('scores'), reverse=True)
+
+    for player in sortedPlayers:
+        player['rank'] = sortedPlayers.index(player)+1
+
+    while (len(sortedPlayers) > 5) :
+        sortedPlayers.pop(len(sortedPlayers)-1)
+
+    return sortedPlayers
+    
+    
+                
 
 
 

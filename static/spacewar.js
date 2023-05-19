@@ -4,7 +4,7 @@ window.addEventListener('load', function() {
     $("#start-btn").click(function () {
         $(this).hide();
         $("#canvas").css("visibility", "visible");
-        document.getElementById("buffer").scrollIntoView();
+        document.getElementById("score-div").scrollIntoView();
         animate();
     })
 

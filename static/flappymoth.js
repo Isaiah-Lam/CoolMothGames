@@ -94,6 +94,7 @@ class Game {
         window.addEventListener("keydown", e => {
             if (e.key == " ") {
                 if (!this.active) {
+                    $("#start-btn").css("display", "none");
                     this.active = true;
                     this.firstFrame = false;
                 }

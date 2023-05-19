@@ -13,7 +13,7 @@
     <div id="start-div">
         <h1 style="text-shadow: 1px 1px black">Choose a game mode:</h1>
         <div id="game-desc-div">
-            <div class="game-desc" id="speed-mode-btn-desc"><h3>Speed Mode:</h3><br><h4>Get as many digits correct as you can in 30 seconds to climb the leaderboards</h4></div>
+            <div class="game-desc" id="speed-mode-btn-desc"><h3>Speed Mode:</h3><br><h4>Get as many digits correct as you can in 30 seconds to climb the leaderboards. But, there's a 2 second penalty for each wrong input.</h4></div>
             <div class="game-desc" id="acc-mode-btn-desc"><h3>Practice Mode:</h3><br><h4>Practice your skills. No timer, no penalties</h4></div>
         </div>
         
@@ -27,6 +27,11 @@
         <br>
         <span>Score:</span>
         <span id="score">0</span>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <h4>{{ messages[0] }}</h4>
+            {% endif %}
+        {% endwith %}
     </div>
 
     <div id="digit-line">
