@@ -19,7 +19,9 @@
                     <!-- <div class="row"> -->
                         <!-- <div class="column"> -->
                             <p class="username message-box-item">{{rating.username}}</p>
-                            {% if rating.rating == 1 %}
+                            {% if rating.rating == 0 %}
+                                <p class="stars-rating message-box-item">☆☆☆☆☆</p>
+                            {% elif rating.rating == 1 %}
                                 <p class="stars-rating message-box-item">★☆☆☆☆</p>
                             {% elif rating.rating == 2 %}
                                 <p class="stars-rating message-box-item">★★☆☆☆</p>
@@ -57,6 +59,31 @@
 
     </div>
 </div>
+
+<footer id="footercontainer">
+	<div class="footer">
+        <div class="row" id="socials">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-youtube"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+        </div>
+	
+        <div class="row">
+            <ul>
+                <li><a href="#">Contact us</a></li>
+                <li><a href="#">Our Services</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms & Conditions</a></li>
+                <li><a href="#">Career</a></li>
+            </ul>
+        </div>
+	
+        <div class="row">
+            CoolMothGames Copyright © 2021 Moth Publishing - All rights reserved || Designed By: Moth Man
+        </div>
+	</div>
+</footer>
 
 <script src="/static/rating.js" ></script>
 

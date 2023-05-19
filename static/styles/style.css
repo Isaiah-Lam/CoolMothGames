@@ -68,13 +68,14 @@
     }
 
 #socials{
+    padding: 8px 0;
     display: flex;
     justify-content: space-evenly;
     width: 25%;
     }
     
 .footer .row a:hover{
-    color:#fff;
+    color:goldenrod;
     }
     
 .footer .row ul{
@@ -90,6 +91,26 @@
     font-size:2em;
     margin:0 auto;
     }
+
+
+
+.dropitem {
+    margin: 10px 0;
+}
+
+.dropdown-content {
+    padding: 10px;
+    display: none;
+    position: absolute;
+    width: fit-content;
+    background-color: darkgrey;
+    /* min-width: 160px; */
+    /* max-width: 200px; */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
     
     
     

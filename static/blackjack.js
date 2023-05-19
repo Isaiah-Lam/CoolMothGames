@@ -8,6 +8,7 @@ $(document).ready(function () {
     dealerTotal = 0;
     playerTotal2 = 0;
     dealerTotal2 = 0;
+    hasAce = false;
     startGame();
 });
 
@@ -30,10 +31,13 @@ function startGame() {
     $('#dealer-hand').children('.card').each(function () {
         classList = $(this).attr("class").split(/\s+/);
         dealerTotal += parseInt(classList[3]);
+        if (classList[1] == "A") {
+            hasAce = true;
+        }
         // console.log(classList);
     })
-    // console.log("Player Total = " + playerTotal);
-    // console.log("Dealer Total = "  + dealerTotal);
+    console.log("Player Total = " + playerTotal);
+    console.log("Dealer Total = "  + dealerTotal);
 }
 
 function hit() {
@@ -70,6 +74,9 @@ function checkBust(total, side) {
             }
         }
     })
+    if (dealerTotal <= 21) {
+        dealerTotal2 = dealerTotal;
+    }
     if (side == "#player-hand") {
         if (playerTotal2 > 21) {
             winner = "Dealer Wins"
@@ -91,11 +98,17 @@ function dealerTurn() {
         playerTotal2 = playerTotal;
     }
     $($("#dealer-hand").get(0).firstElementChild).removeClass("facedown");
-    while (dealerTotal <= 16) {
+    while (dealerTotal < 16 || hasAce) {
+        if (dealerTotal == 21) {break;}
         $($("#deck").get(0).firstElementChild).removeClass("facedown");
         classList = $(".card").attr("class").split(/\s+/);
         dealerTotal += parseInt(classList[3]);
         $("#dealer-hand").append($("#deck").get(0).firstElementChild);
+        if (dealerTotal >= 22 && hasAce == true) {
+            dealerTotal -= 10;
+            hasAce = false;
+            console.log("- 10");
+        }
         // console.log(dealerTotal);
     }
     if (checkBust(dealerTotal, "#dealer-hand")) {
@@ -114,6 +127,7 @@ function dealerTurn() {
         console.log("Tie");
         winner = "Tie";
     }
+    document.getElementById("player-hand").scrollIntoView();
     endGame();
 }
 

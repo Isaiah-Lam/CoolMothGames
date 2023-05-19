@@ -1,6 +1,7 @@
 var count = 0;
 var turn = 1;
 var winStreak = 0; 
+var tie;
 var pop = new Audio("static/sounds/pop.mp3");
 
 function clearBoard(){
@@ -27,7 +28,6 @@ function computerTurn(){
     turn = 1;
     if(checkWin("O")){
         winStreak = 0;
-        $("#p2-score").text(p2Score);
         clearBoard();
     }
    
